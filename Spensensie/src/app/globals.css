@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --background: 173 50% 97%;
+    --foreground: 173 80% 8%;
+    --card: 0 0% 100%;
+    --card-foreground: 173 80% 8%;
+    --border: 173 30% 88%;
+  }
+
+  .dark {
+    --background: 173 100% 4%;
+    --foreground: 173 30% 98%;
+    --card: 173 70% 8%;
+    --card-foreground: 173 30% 98%;
+    --border: 173 40% 15%;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+body {
+  @apply bg-[#f0f8f6] text-slate-900 dark:bg-[#001715] dark:text-slate-100 transition-colors duration-300 font-sans min-h-screen antialiased overflow-x-hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Glassmorphism utilities with Pine Green Theme Glows */
+.glass-panel {
+  @apply bg-white/90 dark:bg-[#012724]/90 backdrop-blur-md border border-[#01796F]/25 dark:border-[#3E9F8E]/30 shadow-xl shadow-[#001715]/10 rounded-2xl;
+}
+
+.glass-card {
+  @apply bg-white/95 dark:bg-[#023935]/90 backdrop-blur-sm border border-[#97D2C5]/50 dark:border-[#01796F]/50 rounded-xl transition-all duration-300;
+}
+
+.pine-glow {
+  box-shadow: 0 0 30px -5px rgba(1, 121, 111, 0.4);
+}
+
+.pine-glow-dark {
+  box-shadow: 0 0 35px -5px rgba(62, 159, 142, 0.45);
+}
+
+.pine-gradient {
+  background: linear-gradient(135deg, #014D47 0%, #01796F 50%, #3E9F8E 100%);
+}
+
+/* Custom Scrollbar in Pine Green */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-[#67BBA9] dark:bg-[#014D47] rounded-full hover:bg-[#01796F] dark:hover:bg-[#3E9F8E];
+}
+
+/* Slide animation helper classes */
+.slide-tab-enter {
+  animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Remove arrows/spinners from number inputs */
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    margin: 0 !important;
+  }
+  input[type="number"] {
+    -webkit-appearance: textfield !important;
+    -moz-appearance: textfield !important;
+    appearance: textfield !important;
+  }
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+input[type="number"] {
+  -moz-appearance: textfield !important;
+  appearance: textfield !important;
+}
+
+/* Print & PDF Export Styling Optimization */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+  header, footer, nav {
+    display: none !important;
+  }
+  .print\:hidden {
+    display: none !important;
+  }
+  @page {
+    margin: 1.2cm;
+    size: A4 portrait;
+  }
+}
