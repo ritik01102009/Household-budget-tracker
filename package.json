@@ -1,0 +1,14 @@
+{
+  "name": "household-budget-tracker-root",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix Spensensie run build:worker",
+    "build:next": "npm --prefix Spensensie run build",
+    "build:worker": "npm --prefix Spensensie run build:worker",
+    "dev": "npm --prefix Spensensie run dev",
+    "start": "npm --prefix Spensensie run start",
+    "deploy": "npm --prefix Spensensie run deploy",
+    "lint": "npm --prefix Spensensie run lint"
+  }
+}
