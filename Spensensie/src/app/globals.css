@@ -1,146 +1,216 @@
-@import "tailwindcss";
-
-@custom-variant dark (&:where(.dark, .dark *));
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   :root {
-    --background: 173 50% 97%;
-    --foreground: 173 80% 8%;
-    --card: 0 0% 100%;
-    --card-foreground: 173 80% 8%;
-    --border: 173 30% 88%;
+    --background: 0 0% 100%;
+    --foreground: 224 71.4% 4.1%;
+    --primary: 160 84% 39%;
+    --primary-foreground: 160 84% 99%;
+    --secondary: 164 86% 16%;
+    --secondary-foreground: 164 86% 96%;
+    --accent: 84 81% 44%;
+    --accent-foreground: 84 81% 95%;
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
+    --border: 220 13% 91%;
+    --radius: 1rem;
   }
 
   .dark {
-    --background: 173 100% 4%;
-    --foreground: 173 30% 98%;
-    --card: 173 70% 8%;
-    --card-foreground: 173 30% 98%;
-    --border: 173 40% 15%;
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --primary: 160 84% 39%;
+    --primary-foreground: 160 84% 99%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --border: 217.2 32.6% 17.5%;
+  }
+
+  /* ─── Global input/select/textarea dark mode ─── */
+  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    @apply bg-slate-50 text-slate-900 border-slate-200 placeholder-slate-400;
+  }
+
+  .dark input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),
+  .dark select,
+  .dark textarea {
+    @apply bg-slate-900 text-slate-100 border-slate-700 placeholder-slate-500;
+  }
+
+  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):focus,
+  select:focus,
+  textarea:focus {
+    @apply outline-none ring-1 ring-brand-500 border-brand-500;
+  }
+
+  select option {
+    @apply bg-white text-slate-900;
+  }
+  .dark select option {
+    @apply bg-slate-900 text-slate-100;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .dark .glass-card {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .glass-card-premium {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  }
+
+  .dark .glass-card-premium {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.4) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #10b981 0%, #065f46 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .dark .text-gradient {
+    background: linear-gradient(135deg, #34d399 0%, #a3e635 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }
 
 html {
   scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-  touch-action: manipulation;
 }
 
 body {
-  @apply bg-[#f0f8f6] text-slate-900 dark:bg-[#001715] dark:text-slate-100 transition-colors duration-300 font-sans min-h-screen antialiased overflow-x-hidden;
-  -webkit-tap-highlight-color: transparent;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Glassmorphism utilities with Pine Green Theme Glows */
-.glass-panel {
-  @apply bg-white/90 dark:bg-[#012724]/90 backdrop-blur-md border border-[#01796F]/25 dark:border-[#3E9F8E]/30 shadow-xl shadow-[#001715]/10 rounded-2xl;
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
 }
 
-.glass-card {
-  @apply bg-white/95 dark:bg-[#023935]/90 backdrop-blur-sm border border-[#97D2C5]/50 dark:border-[#01796F]/50 rounded-xl transition-all duration-300;
-}
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+.dark ::-webkit-scrollbar-thumb { background: #475569; }
+::-webkit-scrollbar-thumb:hover { background: #10b981; }
 
-.pine-glow {
-  box-shadow: 0 0 30px -5px rgba(1, 121, 111, 0.4);
-}
-
-.pine-glow-dark {
-  box-shadow: 0 0 35px -5px rgba(62, 159, 142, 0.45);
-}
-
-.pine-gradient {
-  background: linear-gradient(135deg, #014D47 0%, #01796F 50%, #3E9F8E 100%);
-}
-
-/* Custom Scrollbar in Pine Green */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
+/* Range input styling */
+input[type="range"] {
+  height: 4px;
+  border-radius: 2px;
+  cursor: pointer;
   background: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
-::-webkit-scrollbar-thumb {
-  @apply bg-[#67BBA9] dark:bg-[#014D47] rounded-full hover:bg-[#01796F] dark:hover:bg-[#3E9F8E];
-}
-
-/* Slide animation helper classes */
-.slide-tab-enter {
-  animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px) scale(0.99);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+input[type="range"]:focus {
+  ring: none;
+  outline: none;
+  border: none;
 }
 
-@keyframes slideInFromRight {
-  from {
-    opacity: 0;
-    transform: translateX(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInFromLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Remove arrows/spinners from number inputs */
-@layer base {
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    appearance: none !important;
-    margin: 0 !important;
-  }
-  input[type="number"] {
-    -webkit-appearance: textfield !important;
-    -moz-appearance: textfield !important;
-    appearance: textfield !important;
-  }
-}
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none !important;
-  margin: 0 !important;
-}
-input[type="number"] {
-  -moz-appearance: textfield !important;
-  appearance: textfield !important;
-}
-
-/* Print & PDF Export Styling Optimization */
+/* ─── Print Styles ─── */
 @media print {
+  /* Hide all chrome */
+  nav, footer, .no-print,
+  button:not(.print-show),
+  input[type="range"],
+  .action-buttons { display: none !important; }
+
+  /* Reset page */
   body {
-    background: #ffffff !important;
+    background: white !important;
     color: #0f172a !important;
+    font-family: 'Inter', sans-serif;
+    font-size: 11pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
-  header, footer, nav {
-    display: none !important;
+
+  /* Let containers fill full width */
+  .print-container,
+  .max-w-7xl,
+  .max-w-6xl,
+  .max-w-5xl { max-width: 100% !important; padding: 0 !important; }
+
+  /* Remove shadows and borders for clean look */
+  .glass-card-premium,
+  .glass-card {
+    background: white !important;
+    box-shadow: none !important;
+    border: 1px solid #e2e8f0 !important;
+    backdrop-filter: none !important;
   }
-  .print\:hidden {
-    display: none !important;
+
+  /* Print header injected on every page */
+  body::before {
+    content: "SpendSensie  ·  Financial Intelligence Platform";
+    display: block;
+    text-align: center;
+    font-size: 9pt;
+    color: #64748b;
+    border-bottom: 2px solid #10b981;
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+    letter-spacing: 0.06em;
+    font-weight: 600;
   }
-  @page {
-    margin: 1.2cm;
-    size: A4 portrait;
+
+  /* Print footer */
+  body::after {
+    content: "Generated by SpendSensie  ·  spendsensie.com  ·  " attr(data-date);
+    display: block;
+    text-align: center;
+    font-size: 8pt;
+    color: #94a3b8;
+    margin-top: 24px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 6px;
   }
+
+  /* Show hidden print sections */
+  .print\:block { display: block !important; }
+  .hidden { display: none; }
+  .hidden.print\:block { display: block !important; }
+
+  /* Page breaks */
+  .page-break { page-break-before: always; }
+  .no-break { page-break-inside: avoid; }
+
+  /* Sidebar tools selector — hide on print */
+  .lg\:col-span-5:has(button[data-tool]) { display: none !important; }
+
+  /* Make result grids print nicely */
+  .grid { display: grid !important; }
 }

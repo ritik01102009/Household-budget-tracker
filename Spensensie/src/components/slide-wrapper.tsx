@@ -1,34 +1,93 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface SlideWrapperProps {
-  activeKey: string;
-  direction: "left" | "right";
   children: React.ReactNode;
+  activeKey: string;
+  direction?: "left" | "right" | "up";
+  className?: string;
 }
 
-export function SlideWrapper({ activeKey, direction, children }: SlideWrapperProps) {
-  const [animClass, setAnimClass] = useState("");
+const variants = {
+  enter: (direction: string) => ({
+    x: direction === "left" ? 60 : direction === "right" ? -60 : 0,
+    y: direction === "up" ? 30 : 0,
+    opacity: 0,
+    scale: 0.98,
+  }),
+  center: {
+    x: 0,
+    y: 0,
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.35,
+      ease: [0.16, 1, 0.3, 1], // Custom smooth cubic bezier
+    },
+  },
+  exit: (direction: string) => ({
+    x: direction === "left" ? -60 : direction === "right" ? 60 : 0,
+    y: direction === "up" ? -30 : 0,
+    opacity: 0,
+    scale: 0.98,
+    transition: {
+      duration: 0.2,
+      ease: "easeIn",
+    },
+  }),
+};
 
-  useEffect(() => {
-    const enter = direction === "left" ? "slide-in-left" : "slide-in-right";
-    setAnimClass(enter);
-    const t = setTimeout(() => setAnimClass(""), 350);
-    return () => clearTimeout(t);
-  }, [activeKey, direction]);
-
+export function SlideWrapper({ children, activeKey, direction = "left", className = "" }: SlideWrapperProps) {
   return (
-    <div
-      key={activeKey}
-      className={`w-full ${animClass}`}
-      style={{
-        animation: animClass
-          ? `${animClass === "slide-in-left" ? "slideInFromRight" : "slideInFromLeft"} 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards`
-          : undefined,
+    <AnimatePresence mode="wait" custom={direction}>
+      <motion.div
+        key={activeKey}
+        custom={direction}
+        variants={variants}
+        initial="enter"
+        animate="center"
+        exit="exit"
+        className={className}
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
+export function FadeInStagger({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <motion.div
+      initial="hidden"
+      animate="show"
+      variants={{
+        hidden: { opacity: 0 },
+        show: {
+          opacity: 1,
+          transition: {
+            staggerChildren: 0.08,
+          },
+        },
       }}
+      className={className}
     >
       {children}
-    </div>
+    </motion.div>
+  );
+}
+
+export function FadeInItem({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <motion.div
+      variants={{
+        hidden: { opacity: 0, y: 15 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
+      }}
+      className={className}
+    >
+      {children}
+    </motion.div>
   );
 }

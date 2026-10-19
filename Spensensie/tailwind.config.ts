@@ -10,32 +10,44 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        pine: {
-          50: "#E6F4F1",
-          100: "#C3E5DE",
-          200: "#97D2C5",
-          300: "#67BBA9",
-          400: "#3E9F8E",
-          500: "#01796F", // Classic Pine Green Primary
-          600: "#01635B",
-          700: "#014D47",
-          800: "#023935", // Deep Pine Forest Card
-          900: "#012724", // Pine Dark Mode Surface
-          950: "#001715", // Pine Dark Mode Background
-        },
         brand: {
-          50: "#E6F4F1",
-          100: "#C3E5DE",
-          200: "#97D2C5",
-          300: "#67BBA9",
-          400: "#3E9F8E",
-          500: "#01796F",
-          600: "#01635B",
-          700: "#014D47",
-          800: "#023935",
-          900: "#012724",
-          950: "#001715",
+          50: "#ECFDF5",
+          100: "#D1FAE5",
+          200: "#A7F3D0",
+          300: "#6EE7B7",
+          400: "#34D399",
+          500: "#10B981", // Emerald primary
+          600: "#059669",
+          700: "#047857",
+          800: "#065F46", // Forest secondary
+          900: "#064E3B",
+          950: "#022C22",
         },
+        limebrand: {
+          50: "#F7FEE7",
+          100: "#ECFCCB",
+          200: "#D9F99D",
+          300: "#BEF264",
+          400: "#A3E635",
+          500: "#84CC16", // Lime accent
+          600: "#65A30D",
+          700: "#4D7C0F",
+          800: "#3F6212",
+          900: "#365314",
+        },
+        darkbg: {
+          50: "#F8FAFC",
+          100: "#F1F5F9",
+          200: "#E2E8F0",
+          300: "#CBD5E1",
+          400: "#94A3B8",
+          500: "#64748B",
+          600: "#475569",
+          700: "#334155",
+          800: "#1E293B", // Dark Mode Card
+          900: "#0F172A", // Dark Mode Bg
+          950: "#020617",
+        }
       },
       fontFamily: {
         sans: ["var(--font-sans)", "Inter", "sans-serif"],

@@ -1,0 +1,2609 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpendSensie — Financial Intelligence Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: 'Inter', sans-serif;
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --surface-secondary: #f8fafc;
+        --text: #0f172a;
+        --muted: #64748b;
+        --border: #e2e8f0;
+        --brand: #10b981;
+        --brand-dark: #065f46;
+        --accent: #84cc16;
+        --accent-foreground: #0f172a;
+        --shadow: 0 28px 60px rgba(15, 23, 42, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at top, rgba(16, 185, 129, 0.08), transparent 32%),
+          linear-gradient(180deg, #f8fafc 0%, #ffffff 60%, #f8fafc 100%);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .container {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .flex {
+        display: flex;
+      }
+
+      .items-center {
+        align-items: center;
+      }
+
+      .justify-between {
+        justify-content: space-between;
+      }
+
+      .space-x-4 > *:not(:last-child) {
+        margin-right: 1rem;
+      }
+
+      .text-sm {
+        font-size: 0.95rem;
+      }
+
+      .text-xs {
+        font-size: 0.8rem;
+      }
+
+      .section {
+        padding: 4rem 0;
+      }
+
+      .section-heading {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .section-heading h2 {
+        margin: 0.5rem 0 0;
+        font-size: clamp(2.1rem, 2.4vw, 3rem);
+        letter-spacing: -0.03em;
+        line-height: 1.05;
+        font-family: 'Poppins', sans-serif;
+      }
+
+      .section-heading p {
+        max-width: 720px;
+        margin: 1rem auto 0;
+        color: var(--muted);
+      }
+
+      .callout-note {
+        max-width: 720px;
+        margin: 1.5rem auto 0;
+        padding: 1rem 1.25rem;
+        background: rgba(16, 185, 129, 0.08);
+        border: 1px solid rgba(16, 185, 129, 0.18);
+        border-radius: 18px;
+        color: #065f46;
+        font-size: 0.98rem;
+        line-height: 1.6;
+      }
+
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(14px);
+        background: rgba(255, 255, 255, 0.86);
+        border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+      }
+
+      .navbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 76px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.85rem;
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+
+      .brand-mark {
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, #059669, #4d7c0f);
+        border-radius: 14px;
+        color: white;
+        font-weight: 800;
+        display: grid;
+        place-items: center;
+      }
+
+      .nav-links {
+        display: grid;
+        grid-auto-flow: column;
+        gap: 1rem;
+      }
+
+      .nav-links a {
+        color: var(--muted);
+        font-weight: 500;
+        transition: color 0.25s ease;
+      }
+
+      .nav-links a:hover {
+        color: var(--brand-dark);
+      }
+
+      .nav-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .nav-action-button {
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        background: white;
+        color: var(--text);
+        padding: 0.75rem 0.95rem;
+        border-radius: 999px;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      }
+
+      .nav-action-button:hover {
+        transform: translateY(-1px);
+        border-color: rgba(16, 185, 129, 0.35);
+      }
+
+      .language-dropdown {
+        position: relative;
+      }
+
+      .language-menu {
+        position: absolute;
+        top: calc(100% + 0.75rem);
+        right: 0;
+        min-width: 220px;
+        background: white;
+        border: 1px solid rgba(226, 232, 240, 0.95);
+        border-radius: 18px;
+        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+        padding: 0.5rem 0;
+        max-height: 0;
+        overflow: hidden;
+        visibility: hidden;
+        opacity: 0;
+        transition: max-height 0.3s ease, visibility 0.3s ease, opacity 0.3s ease;
+        z-index: 20;
+      }
+
+      .language-dropdown.open .language-menu {
+        max-height: 400px;
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .language-menu button {
+        width: 100%;
+        border: none;
+        background: transparent;
+        padding: 0.85rem 1rem;
+        text-align: left;
+        font-size: 0.92rem;
+        color: var(--text);
+        cursor: pointer;
+      }
+
+      .language-menu button:hover {
+        background: rgba(16, 185, 129, 0.08);
+      }
+
+      .dark {
+        --bg: #020617;
+        --surface: #0f172a;
+        --surface-secondary: #111827;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --border: #1f2937;
+        --brand: #22c55e;
+        --brand-dark: #4d7c0f;
+        --accent: #84cc16;
+        --accent-foreground: #0f172a;
+        --shadow: 0 28px 60px rgba(0, 0, 0, 0.35);
+      }
+
+      .dark body {
+        background: radial-gradient(circle at top, rgba(34, 197, 94, 0.12), transparent 32%),
+          linear-gradient(180deg, #020617 0%, #0f172a 56%, #020617 100%);
+      }
+
+      .dark .navbar {
+        background: rgba(15, 23, 42, 0.92);
+        border-color: rgba(71, 85, 105, 0.35);
+      }
+
+      .dark .nav-links a {
+        color: #d1d5db;
+      }
+
+      .dark .nav-links a:hover {
+        color: #86efac;
+      }
+
+      .dark .nav-action-button {
+        background: #111827;
+        border-color: rgba(71, 85, 105, 0.8);
+        color: #e2e8f0;
+      }
+
+      .dark .language-menu {
+        background: #111827;
+        border-color: rgba(71, 85, 105, 0.95);
+      }
+
+      .dark .language-menu button:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        padding: 5.5rem 0 5rem;
+      }
+
+      /* Mobile nav */
+      .hamburger { display: none; }
+      .mobile-menu { position: absolute; right: 16px; top: 76px; background: white; border: 1px solid rgba(226,232,240,0.95); border-radius: 12px; box-shadow: 0 18px 40px rgba(15,23,42,0.12); padding: 12px; z-index: 40; max-height: 0; overflow: hidden; visibility: hidden; opacity: 0; transition: max-height 0.3s ease, visibility 0.3s ease, opacity 0.3s ease; }
+      .mobile-menu.open { max-height: 400px; visibility: visible; opacity: 1; }
+      .mobile-menu a { display: block; padding: 8px 12px; color: var(--text); }
+
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.92);
+        border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+      }
+
+      .navbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 76px;
+        gap: 1rem;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.85rem;
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: var(--text);
+      }
+
+      .brand-mark {
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, #059669, #4d7c0f);
+        border-radius: 14px;
+        color: white;
+        font-weight: 800;
+        display: grid;
+        place-items: center;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .nav-links a {
+        color: var(--muted);
+        font-weight: 500;
+        transition: color 0.25s ease, transform 0.25s ease;
+      }
+
+      .nav-links a:hover {
+        color: var(--brand-dark);
+        transform: translateY(-1px);
+      }
+
+      .button-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.8rem 1.25rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #10b981, #22c55e);
+        color: white;
+        font-weight: 700;
+        text-decoration: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .button-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 18px 45px rgba(16, 185, 129, 0.18);
+      }
+
+      .nav-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      @media (max-width: 760px) {
+        .navbar-inner {
+          flex-wrap: wrap;
+          justify-content: space-between;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .nav-actions {
+          width: 100%;
+          justify-content: flex-end;
+        }
+
+        .hamburger {
+          display: inline-flex;
+        }
+      }
+
+      /* Tabs */
+      .tab-list { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; }
+      .tab { padding: 0.5rem 0.85rem; border-radius: 999px; border: 1px solid rgba(226,232,240,1); background: #fff; cursor: pointer; font-weight:600; }
+      .tab.active { background: linear-gradient(135deg,#059669,#047857); color: white; border-color: transparent; }
+
+      .calculator-grid {
+        display: block;
+        gap: 1.5rem;
+      }
+
+      .calc-card {
+        display: none;
+        background: white;
+        border: 1px solid rgba(226, 232, 240, 1);
+        border-radius: 28px;
+        padding: 2rem;
+        box-shadow: 0 20px 48px rgba(15, 23, 42, 0.08);
+      }
+
+      .calc-card.active {
+        display: block;
+      }
+
+      .calc-card h3 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 1.15rem;
+      }
+
+      .input-row {
+        display: grid;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+      }
+
+      .input-label {
+        font-size: 0.9rem;
+        color: #475569;
+      }
+
+      .input-field,
+      .select-field {
+        width: 100%;
+        padding: 0.95rem 1rem;
+        border-radius: 16px;
+        border: 1px solid rgba(226, 232, 240, 1);
+        font-size: 0.96rem;
+        color: #0f172a;
+      }
+
+      .input-field:focus,
+      .select-field:focus {
+        outline: none;
+        border-color: rgba(16, 185, 129, 0.55);
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.08);
+      }
+
+      .result-box {
+        margin-top: 1.25rem;
+        padding: 1.25rem 1.35rem;
+        background: #f8fafc;
+        border-radius: 20px;
+        border: 1px solid rgba(226, 232, 240, 1);
+      }
+
+      .result-box strong {
+        display: block;
+        font-size: 1.1rem;
+        margin-bottom: 0.35rem;
+      }
+
+      .plan-box {
+        margin-top: 1rem;
+        padding: 1.25rem 1.35rem;
+        background: #ffffff;
+        border-radius: 20px;
+        border: 1px solid rgba(226, 232, 240, 1);
+      }
+
+      .plan-title {
+        margin: 0 0 0.85rem;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .plan-note {
+        margin: 0.75rem 0 0;
+        color: #475569;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      .plan-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
+
+      .plan-table-wrapper {
+        max-height: 380px;
+        overflow: auto;
+        border-radius: 18px;
+        box-shadow: inset 0 0 0 1px rgba(226, 232, 240, 0.6);
+      }
+
+      .plan-comparison {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .plan-card {
+        padding: 1rem;
+        background: #f8fafc;
+        border-radius: 22px;
+        border: 1px solid rgba(226, 232, 240, 0.9);
+      }
+
+      .plan-card strong {
+        display: block;
+        margin-bottom: 0.4rem;
+        color: #0f172a;
+      }
+
+      .plan-card p {
+        margin: 0.5rem 0 0;
+        color: #475569;
+        line-height: 1.5;
+      }
+
+      .plan-callout {
+        margin-top: 1rem;
+        padding: 1rem 1.1rem;
+        border-radius: 20px;
+        background: #ecfdf5;
+        border: 1px solid #d1fae5;
+        color: #065f46;
+      }
+
+      .plan-table-wrapper table {
+        width: 100%;
+        min-width: 680px;
+      }
+
+      .plan-table-wrapper::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      .plan-table-wrapper::-webkit-scrollbar-thumb {
+        background: rgba(15, 23, 42, 0.12);
+        border-radius: 999px;
+      }
+
+      .plan-table th,
+      .plan-table td {
+        padding: 0.9rem 0.85rem;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.95);
+        text-align: left;
+        font-size: 0.95rem;
+      }
+
+      .plan-table th {
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .plan-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .calc-button {
+        width: 100%;
+        padding: 1rem 1.15rem;
+        border-radius: 16px;
+        border: none;
+        background: linear-gradient(135deg, #059669, #047857);
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 0.75rem;
+        transition: transform 0.2s ease;
+      }
+
+      .calc-button:hover {
+        transform: translateY(-1px);
+      }
+
+      .report-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.9rem;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1.25rem;
+      }
+
+      .report-button {
+        flex: 1;
+        min-width: 180px;
+        padding: 1rem 1.2rem;
+        border-radius: 16px;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        background: #ffffff;
+        color: var(--text);
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+      }
+
+      .report-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
+        background: #f8fafc;
+        border-color: rgba(15, 23, 42, 0.15);
+      }
+
+      .report-button.primary {
+        background: linear-gradient(135deg, #0f172a, #475569);
+        color: white;
+        border-color: transparent;
+      }
+
+      .report-button.secondary {
+        background: #ffffff;
+        color: #0f172a;
+      }
+
+      .report-actions-note {
+        width: 100%;
+        color: #475569;
+        font-size: 0.92rem;
+        line-height: 1.5;
+        margin-top: -0.2rem;
+      }
+
+      @media (max-width: 1080px) {
+        .calculator-grid {
+          grid-template-columns: 1fr;
+        }
+        .hero-grid,
+        .stats-grid,
+        .feature-grid,
+        .tips-grid,
+        .reviews-grid,
+        .grid-2,
+        .grid-4 {
+          grid-template-columns: 1fr;
+        }
+        .hamburger { display: inline-flex; }
+        .nav-links { display: none; }
+        .nav-actions { gap: 0.5rem; }
+        /* On small screens show only one calc card at a time; JS will toggle .active */
+        .calculator-grid .calc-card { display: none; }
+        .calculator-grid .calc-card.active { display: block; }
+      }
+
+      .hero::before,
+      .hero::after {
+        content: '';
+        position: absolute;
+        border-radius: 999px;
+        filter: blur(90px);
+        opacity: 0.7;
+      }
+
+      .hero::before {
+        width: 420px;
+        height: 420px;
+        top: 3rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(16, 185, 129, 0.18);
+      }
+
+      .hero::after {
+        width: 280px;
+        height: 280px;
+        top: 9rem;
+        right: 2rem;
+        background: rgba(132, 204, 22, 0.18);
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.3fr 0.95fr;
+        align-items: center;
+        gap: 2.5rem;
+      }
+
+      .hero-copy {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-copy p.lead {
+        max-width: 620px;
+        color: #475569;
+        font-size: 1.05rem;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1rem;
+        border-radius: 999px;
+        background: rgba(236, 253, 245, 0.85);
+        border: 1px solid rgba(16, 185, 129, 0.18);
+        color: #065f46;
+        font-size: 0.88rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+      }
+
+      .hero-copy h1 {
+        margin: 0;
+        font-size: clamp(3.1rem, 4vw, 4.8rem);
+        line-height: 1.02;
+        letter-spacing: -0.04em;
+        font-family: 'Poppins', sans-serif;
+      }
+
+      .text-gradient {
+        background: linear-gradient(135deg, #10b981 0%, #065f46 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .button-primary,
+      .button-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.55rem;
+        padding: 1rem 1.6rem;
+        border-radius: 18px;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .button-primary {
+        background: linear-gradient(135deg, #059669, #047857);
+        color: white;
+        box-shadow: 0 18px 28px rgba(16, 185, 129, 0.18);
+      }
+
+      .button-secondary {
+        background: #f8fafc;
+        color: #0f172a;
+        border: 1px solid #e2e8f0;
+      }
+
+      .button-primary:hover,
+      .button-secondary:hover {
+        transform: translateY(-1px);
+      }
+
+      .hero-card {
+        position: relative;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        border-radius: 32px;
+        box-shadow: var(--shadow);
+      }
+
+      .hero-card .card-badge {
+        position: absolute;
+        top: -0.8rem;
+        right: -0.5rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #d1fae5;
+        color: #065f46;
+        padding: 0.85rem 1rem;
+        border-radius: 999px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.12);
+      }
+
+      .hero-card h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1.2rem;
+        font-family: 'Poppins', sans-serif;
+      }
+
+      .hero-card p {
+        margin: 0 0 1.5rem;
+        color: #475569;
+      }
+
+      .stats-grid,
+      .feature-grid,
+      .tips-grid,
+      .reviews-grid {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .stat-card,
+      .feature-card,
+      .tip-card,
+      .review-card,
+      .faq-card {
+        border-radius: 28px;
+        padding: 1.8rem;
+        background: white;
+        border: 1px solid rgba(226, 232, 240, 0.9);
+      }
+
+      .stat-card p.value {
+        margin: 0;
+        font-size: 2.2rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #34d399, #65a30d);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .stat-card p.label {
+        margin: 0.65rem 0 0;
+        font-size: 0.82rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #64748b;
+      }
+
+      .feature-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .feature-card {
+        transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(16, 185, 129, 0.3);
+        box-shadow: 0 24px 66px rgba(15, 23, 42, 0.08);
+      }
+
+      .feature-card .feature-icon {
+        width: 54px;
+        height: 54px;
+        display: grid;
+        place-items: center;
+        border-radius: 20px;
+        background: #ecfdf5;
+        margin-bottom: 1.15rem;
+      }
+
+      .feature-card h3 {
+        margin: 0 0 0.75rem;
+        font-size: 1.1rem;
+      }
+
+      .feature-card p {
+        margin: 0;
+        color: #475569;
+      }
+
+      .tips-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .tip-card {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+        background: rgba(255, 255, 255, 0.95);
+        border-color: rgba(226, 232, 240, 1);
+      }
+
+      .tip-card .tip-number {
+        width: 44px;
+        min-height: 44px;
+        border-radius: 16px;
+        background: rgba(16, 185, 129, 0.12);
+        color: #065f46;
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+      }
+
+      .tip-card div p {
+        margin: 0;
+      }
+
+      .reviews-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .review-card {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .review-card::before {
+        content: '"';
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 5rem;
+        color: rgba(15, 23, 42, 0.05);
+      }
+
+      .review-card p {
+        margin: 0 0 1.5rem;
+        color: #475569;
+      }
+
+      .review-author {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+      }
+
+      .review-avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 18px;
+        object-fit: cover;
+      }
+
+      .faq-card {
+        border-radius: 28px;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      .faq-item {
+        border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+      }
+
+      .faq-item:last-child {
+        border-bottom: none;
+      }
+
+      .faq-question {
+        width: 100%;
+        border: none;
+        background: transparent;
+        padding: 1.5rem 1.8rem;
+        text-align: left;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .faq-answer {
+        padding: 0 1.8rem 1.4rem;
+        color: #475569;
+        max-height: 0;
+        overflow: hidden;
+        visibility: hidden;
+        transition: max-height 0.3s ease, visibility 0.3s ease;
+      }
+
+      .faq-item.open .faq-answer {
+        max-height: 200px;
+        visibility: visible;
+      }
+
+      .faq-item.open .faq-question {
+        color: #065f46;
+      }
+
+      .cta-block {
+        border-radius: 32px;
+        padding: 3rem;
+        background: linear-gradient(135deg, #059669, #047857);
+        color: white;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cta-block::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(circle at top left, rgba(255,255,255,0.18), transparent 20%),
+          radial-gradient(circle at bottom right, rgba(255,255,255,0.14), transparent 18%);
+      }
+
+      .cta-block > * {
+        position: relative;
+      }
+
+      .cta-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 1.75rem;
+      }
+
+      .cta-actions a {
+        min-width: 170px;
+      }
+
+      .footer {
+        background: #0f172a;
+        color: #cbd5e1;
+        padding: 3rem 0 2rem;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1.5rem;
+      }
+
+      .footer a {
+        color: #cbd5e1;
+      }
+
+      .footer a:hover {
+        color: #86efac;
+      }
+
+      .footer h3 {
+        margin-bottom: 1rem;
+        color: white;
+        font-size: 0.95rem;
+      }
+
+      .footer p,
+      .footer li {
+        margin: 0;
+        color: #94a3b8;
+        font-size: 0.92rem;
+      }
+
+      .footer-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 0.8rem;
+      }
+
+      .footer-bottom {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-top: 2rem;
+        color: #94a3b8;
+        font-size: 0.85rem;
+      }
+
+      .footer-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+      }
+
+      .footer-brand span {
+        font-weight: 700;
+        font-size: 1rem;
+        color: white;
+      }
+
+      .pill-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.65rem 1rem;
+        background: rgba(236, 253, 245, 0.85);
+        border-radius: 999px;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        color: #065f46;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem;
+      }
+
+      .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1.5rem;
+      }
+
+      .button-muted {
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.32);
+        color: white;
+      }
+
+      .button-muted:hover {
+        background: rgba(255,255,255,0.12);
+      }
+
+      .avatar-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .avatar-row img {
+        width: 52px;
+        height: 52px;
+        object-fit: cover;
+        border-radius: 18px;
+        border: 2px solid rgba(16, 185, 129, 0.18);
+      }
+
+      .small-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+      }
+
+      .hero-card-grid {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .hero-card-grid .small-card {
+        padding: 1rem;
+        border-radius: 22px;
+      }
+
+      .hero-card-grid .small-card span {
+        display: block;
+        font-size: 0.78rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #475569;
+      }
+
+      .hero-card-grid .small-card strong {
+        display: block;
+        margin-top: 0.45rem;
+        font-size: 1.1rem;
+      }
+
+      @media (max-width: 1080px) {
+        .hero-grid,
+        .stats-grid,
+        .feature-grid,
+        .tips-grid,
+        .reviews-grid,
+        .grid-2,
+        .grid-4 {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .navbar-inner {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .nav-links {
+          grid-auto-flow: row;
+          justify-items: center;
+          width: 100%;
+        }
+
+        .hero {
+          padding-top: 4rem;
+        }
+
+        .hero-grid {
+          gap: 2rem;
+        }
+
+        .hero-card {
+          padding: 1.6rem;
+        }
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="container navbar-inner">
+        <a href="#hero" class="brand">
+          <span class="brand-mark">$</span>
+          <span>SpendSensie</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Primary navigation">
+<a href="#hero">Home</a>
+           <a href="#features">Solutions</a>
+           <a href="#membership">Membership</a>
+           
+           
+           <a href="#faq">FAQ</a>
+        </nav>
+
+        <div class="nav-actions">
+          <button id="theme-toggle" class="nav-action-button" aria-label="Toggle dark mode">
+            <span id="theme-icon">🌙</span>
+            <span id="theme-label">Dark</span>
+          </button>
+          <div class="language-dropdown" id="language-dropdown">
+            <button id="language-toggle" class="nav-action-button" aria-label="Select language">
+              🌐 <span id="language-label">All Languages</span>
+            </button>
+            <div class="language-menu" id="language-menu">
+              <button data-lang="en">English</button>
+              <button data-lang="es">Español</button>
+              <button data-lang="fr">Français</button>
+              <button data-lang="de">Deutsch</button>
+              <button data-lang="pt">Português</button>
+              <button data-lang="zh">中文</button>
+              <button data-lang="ja">日本語</button>
+              <button data-lang="ko">한국어</button>
+              <button data-lang="ru">Русский</button>
+              <button data-lang="ar">العربية</button>
+              <button data-lang="hi">हिन्दी</button>
+              <button data-lang="it">Italiano</button>
+            </div>
+          </div>
+          <button id="hamburger" class="nav-action-button hamburger" aria-label="Open menu">☰</button>
+        </div>
+      </div>
+
+      <div class="mobile-menu" id="mobile-menu">
+<a href="#hero">Home</a>
+         <a href="#features">Solutions</a>
+         
+         
+         <a href="#faq">FAQ</a>
+      </div>
+    </header>
+
+    <section class="section hero" id="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <div class="pill">Professional finance planning made simple</div>
+            <h1 class="text-gradient" data-key="heroTitle">Turn debt and budgets into a single confident financial plan.</h1>
+            <p class="lead" data-key="heroLead">SpendSensie delivers intelligent payoff forecasts, cash-flow clarity, and printable reports in one polished experience. Get free tracker-style budgeting help with no pressure to upgrade.</p>
+            <div class="hero-buttons">
+              <a href="#calculator" class="button-primary">Launch the calculator</a>
+              <a href="#features" class="button-secondary">Explore solutions</a>
+            </div>
+            <p class="report-button secondary" style="margin-top: 1.5rem; display: inline-flex; padding: 0.85rem 1rem; font-size: 0.95rem;">Fast access to professional reports, charts, and payoff suggestions.</p>
+          </div>
+          <div class="hero-visual">
+            <div class="hero-card">
+              <div class="card-badge">Dashboard preview</div>
+              <h3>Home view at a glance</h3>
+              <p>Check balances, payoff timelines, and savings opportunities instantly with a finance-first landing page.</p>
+              <div class="hero-card-grid">
+                <div class="small-card">
+                  <span>Debt balance</span>
+                  <strong>$18,350</strong>
+                </div>
+                <div class="small-card">
+                  <span>Monthly payoff</span>
+                  <strong>$675</strong>
+                </div>
+                <div class="small-card">
+                  <span>Interest saved</span>
+                  <strong>$4,120</strong>
+                </div>
+                <div class="small-card">
+                  <span>Report ready</span>
+                  <strong>PDF / Print</strong>
+                </div>
+              </div>
+              <p style="margin-top: 1.25rem; color: #475569; font-size: 0.95rem;">A refined homepage visual for the professional finance tool you want when Home is clicked.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+      <section class="section" style="background: #0f172a; color: white; padding-top: 2.5rem; padding-bottom: 2.5rem;">
+        <div class="container stats-grid">
+          <div class="stat-card" style="background: #111827; border-color: rgba(255,255,255,0.08);">
+            <p class="value">$12.4M+</p>
+            <p class="label">Debt Tracked & Paid</p>
+          </div>
+          <div class="stat-card" style="background: #111827; border-color: rgba(255,255,255,0.08);">
+            <p class="value">48,000+</p>
+            <p class="label">Financial Accounts Linked</p>
+          </div>
+          <div class="stat-card" style="background: #111827; border-color: rgba(255,255,255,0.08);">
+            <p class="value">$2.8M+</p>
+            <p class="label">Interest Payments Saved</p>
+          </div>
+          <div class="stat-card" style="background: #111827; border-color: rgba(255,255,255,0.08);">
+            <p class="value">99.4%</p>
+            <p class="label">User Satisfaction</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="container">
+          <div class="section-heading">
+            <div class="pill-tag">Engineered Core Solutions</div>
+            <h2>Financial Tools Built for Wellness</h2>
+            <p>Why settle for clunky spreadsheets? SpendSensie delivers dynamic calculators, smarter cash-flow planning, and budget forecasting in a consolidated platform.</p>
+          </div>
+          <div class="feature-grid">
+            <div class="feature-card">
+              <div class="feature-icon">📈</div>
+              <h3>Cash Flow Forecasting</h3>
+              <p>Project your monthly inflows and outflows, then see how payments and savings affect your available cash.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">📊</div>
+              <h3>Budget Tracker & Forecasting</h3>
+              <p>Set budgets, categorize spending, and forecast cash flow with intelligent analytics that keep your plans on track.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🧮</div>
+              <h3>Debt Avalanche vs Snowball</h3>
+              <p>Compare payoff strategies across balances and identify the optimal route for faster debt elimination.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🎯</div>
+              <h3>Visual Goal Milestones</h3>
+              <p>Create saving targets for homes, vacations, or retirement, then monitor progress with polished visuals.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🛡️</div>
+              <h3>Secure Private Finance</h3>
+              <p>Work in a local-first, privacy-first environment. Your data stays encrypted and under your control.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="budget">
+        <div class="container">
+          <div class="section-heading">
+            <div class="pill-tag">Budget Intelligence</div>
+            <h2>Track Spending, Forecast Cash Flow</h2>
+            <p>Build realistic budgets, stay ahead of spending, and get friendly tracker-style support for every month.</p>
+            <div class="callout-note">Help is always free here. Track your budget, manage your expenses, and grow your savings without any upsell pressure.</div>
+          </div>
+          <div class="grid-2">
+            <div class="feature-card" style="background: #ffffff;">
+              <h3>Dynamic Budget Planning</h3>
+              <p>Create monthly, quarterly, or annual budgets that adapt to real income and expense patterns.</p>
+              <ul style="margin: 1rem 0 0; padding-left: 1.2rem; color: #475569;">
+                <li>Set category limits for housing, groceries, entertainment, and more.</li>
+                <li>Review actual performance versus plan in real time.</li>
+                <li>Receive smart alerts before you overspend.</li>
+              </ul>
+            </div>
+            <div class="feature-card" style="background: #ffffff;">
+              <h3>Cash Flow Forecast</h3>
+              <p>Predict your financial runway with weekly and monthly forecasts rooted in your current cash flow.</p>
+              <ul style="margin: 1rem 0 0; padding-left: 1.2rem; color: #475569;">
+                <li>Forecast available spend after recurring obligations.</li>
+                <li>See how debt payments and savings goals affect your outlook.</li>
+                <li>Make confident decisions for upcoming months.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="calculator" style="background: #ffffff;">
+        <div class="container">
+          <div class="section-heading">
+            <div class="pill-tag">Budget Intelligence</div>
+            <h2>Track Spending, Forecast Cash Flow</h2>
+            <p>Build realistic budgets, stay ahead of spending, and get friendly tracker-style support for every month.</p>
+            <div class="callout-note">Help is always free here. Track your budget, manage your expenses, and grow your savings without any upsell pressure.</div>
+          </div>
+          <div class="grid-2">
+            <div class="feature-card" style="background: #ffffff;">
+              <h3>Dynamic Budget Planning</h3>
+              <p>Create monthly, quarterly, or annual budgets that adapt to real income and expense patterns.</p>
+              <ul style="margin: 1rem 0 0; padding-left: 1.2rem; color: #475569;">
+                <li>Set category limits for housing, groceries, entertainment, and more.</li>
+                <li>Review actual performance versus plan in real time.</li>
+                <li>Receive smart alerts before you overspend.</li>
+              </ul>
+            </div>
+            <div class="feature-card" style="background: #ffffff;">
+              <h3>Cash Flow Forecast</h3>
+              <p>Predict your financial runway with weekly and monthly forecasts rooted in your current cash flow.</p>
+              <ul style="margin: 1rem 0 0; padding-left: 1.2rem; color: #475569;">
+                <li>Forecast available spend after recurring obligations.</li>
+                <li>See how debt payments and savings goals affect your outlook.</li>
+                <li>Make confident decisions for upcoming months.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="calculator" style="background: #ffffff;">
+        <div class="container">
+          <div class="section-heading">
+            <div class="pill-tag">Live Calculators</div>
+            <h2>Budget & Debt Planning</h2>
+            <p>Run budget forecasts and debt payoff projections in one interactive calculator suite. Enjoy tracker-inspired guidance designed for smarter financial decisions.</p>
+          </div>
+          <div class="tab-list" role="tablist" aria-label="Calculators">
+            <button class="tab active" data-target="calc-debt">Debt Payoff</button>
+            <button class="tab" data-target="calc-budget">Budget</button>
+          </div>
+          <div class="calculator-grid" id="calculator-grid">
+            <div id="calc-debt" class="calc-card active" role="tabpanel">
+              <h3>Debt Payoff Planner</h3>
+              <div class="input-row">
+                <label class="input-label" for="debt-balance">Current balance</label>
+                <input id="debt-balance" class="input-field" type="number" min="0" step="0.01" placeholder="10000" />
+              </div>
+              <div class="input-row">
+                <label class="input-label" for="debt-rate">Interest rate (APR %)</label>
+                <input id="debt-rate" class="input-field" type="number" min="0" step="0.01" placeholder="18" />
+              </div>
+              <div class="input-row">
+                <label class="input-label" for="debt-payment">Monthly payment</label>
+                <input id="debt-payment" class="input-field" type="number" min="1" step="0.01" placeholder="300" />
+              </div>
+              <div class="input-row">
+                <label class="input-label" for="debt-income">Monthly income</label>
+                <input id="debt-income" class="input-field" type="number" min="0" step="0.01" placeholder="4500" />
+              </div>
+              <div class="input-row">
+                <label class="input-label" for="debt-expenses">Monthly expenses</label>
+                <input id="debt-expenses" class="input-field" type="number" min="0" step="0.01" placeholder="3200" />
+              </div>
+              <button id="debt-calc" class="calc-button">Project Payoff</button>
+              <div class="result-box" id="debt-result">
+                <strong>Time to payoff:</strong>
+                <span id="debt-months">0 months</span>
+                <strong>Total interest:</strong>
+                <span id="debt-interest">$0.00</span>
+                <div id="debt-affordability" style="margin-top:0.85rem;color:#475569;font-size:0.95rem;line-height:1.6;">Enter your income and expenses to see a practical payment recommendation.</div>
+                <p id="debt-strategy" style="margin-top:0.75rem;color:#475569;font-size:0.95rem;line-height:1.6;">Enter your debt details to get a Snowball vs Avalanche recommendation.</p>
+                <p id="debt-advice" style="margin:0.75rem 0 0; color:#475569; font-size:0.95rem;">A higher monthly payment accelerates your payoff timeline and lowers interest.</p>
+              </div>
+              <div class="plan-box" id="debt-plan">
+                <p class="plan-title">Payoff plan</p>
+                <div id="debt-plan-summary"><p class="plan-note">A payoff plan will appear here once you enter valid balance, APR, and payment values.</p></div>
+                <div id="debt-plan-schedule"></div>
+              </div>
+              <div class="graph-panel" id="debt-graph-panel">
+                <h4>Payoff Projection</h4>
+                <div class="sparkline" id="debt-balance-sparkline"></div>
+                <div class="sparkline-meta">
+                  <div><strong id="debt-graph-start">Start: $0</strong></div>
+                  <div><strong id="debt-graph-end">Payoff: $0</strong></div>
+                  <div><strong id="debt-graph-interest">Interest</strong></div>
+                </div>
+              </div>
+              <div class="report-actions-note">Print a professional debt payoff summary with timeline and interest metrics.</div>
+              <div class="report-actions">
+                <button id="debt-download-report" class="report-button primary">Print Report</button>
+                <button id="debt-pdf-report" class="report-button secondary">Export PDF Report</button>
+              </div>
+            </div>
+
+            <div id="calc-budget" class="calc-card" role="tabpanel">
+              <h3>Budget Planner</h3>
+              <div class="input-row">
+                <label class="input-label" for="budget-income">Monthly income</label>
+                <input id="budget-income" class="input-field" type="number" min="0" step="0.01" placeholder="5000" />
+              </div>
+              <div class="input-row">
+                <label class="input-label" for="budget-rent">Rent</label>
+                <input id="budget-rent" class="input-field" type="number" min="0" step="0.01" placeholder="1500" />
+              </div>
+              <div class="input-row">
+                <label class="input-label" for="budget-food">Food</label>
+                <input id="budget-food" class="input-field" type="number" min="0" step="0.01" placeholder="600" />
+              </div>
+              <div class="input-row">
+                <label class="input-label" for="budget-transport">Transport</label>
+                <input id="budget-transport" class="input-field" type="number" min="0" step="0.01" placeholder="300" />
+              </div>
+              <div class="input-row">
+                <label class="input-label" for="budget-entertainment">Entertainment</label>
+                <input id="budget-entertainment" class="input-field" type="number" min="0" step="0.01" placeholder="400" />
+              </div>
+              <div class="input-row">
+                <label class="input-label" for="budget-savings">Target savings</label>
+                <input id="budget-savings" class="input-field" type="number" min="0" step="0.01" placeholder="500" />
+              </div>
+              <button id="budget-calc" class="calc-button">Calculate Budget</button>
+              <div class="result-box" id="budget-result">
+                <strong>Total expenses:</strong>
+                <span id="budget-total-expenses">$0.00</span>
+                <strong>Remaining:</strong>
+                <span id="budget-remaining">$0.00</span>
+                <strong>Available spend:</strong>
+                <span id="budget-available">$0.00</span>
+                <strong>Savings rate:</strong>
+                <span id="budget-rate">0%</span>
+                <strong>Savings margin:</strong>
+                <span id="budget-margin">Balanced</span>
+                <p id="budget-advice" style="margin:0.75rem 0 0; color:#475569; font-size:0.95rem;">A healthy budget leaves room for discretionary spending while meeting savings goals.</p>
+              </div>
+              <div class="graph-panel" id="budget-graph-panel">
+                <h4>Budget Breakdown</h4>
+                <div class="graph-item">
+                  <span class="graph-label">Income</span>
+                  <div class="graph-bar"><div id="budget-graph-income" class="graph-fill" style="width:0%; background: #22c55e"></div></div>
+                  <span id="budget-graph-income-label">$0</span>
+                </div>
+                <div class="graph-item">
+                  <span class="graph-label">Expenses</span>
+                  <div class="graph-bar"><div id="budget-graph-expenses" class="graph-fill" style="width:0%; background: #f97316"></div></div>
+                  <span id="budget-graph-expenses-label">$0</span>
+                </div>
+                <div class="graph-item">
+                  <span class="graph-label">Savings</span>
+                  <div class="graph-bar"><div id="budget-graph-savings" class="graph-fill" style="width:0%; background: #4f46e5"></div></div>
+                  <span id="budget-graph-savings-label">$0</span>
+                </div>
+                <div class="graph-item">
+                  <span class="graph-label">Available</span>
+                  <div class="graph-bar"><div id="budget-graph-available" class="graph-fill" style="width:0%; background: #0f172a"></div></div>
+                  <span id="budget-graph-available-label">$0</span>
+                </div>
+              </div>
+              <div class="report-actions-note">Print a refined budget summary with cashflow totals and spending ratios.</div>
+              <div class="report-actions">
+                <button id="budget-download-report" class="report-button primary">Print Report</button>
+                <button id="budget-pdf-report" class="report-button secondary">Export PDF Report</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="tips" style="background: #f8fafc;">
+        <div class="container">
+          <div class="section-heading">
+            <div class="pill-tag">Smart Hacks</div>
+            <h2>Weekly Financial Tips for Everyday Growth</h2>
+            <p>Empower your decision-making with curated rules. Try adding these rules to your monthly budgeting parameters to see savings grow.</p>
+          </div>
+          <div class="tips-grid">
+            <div class="tip-card">
+              <div class="tip-number">01</div>
+              <div>
+                <p style="font-weight: 700; margin-bottom: 0.65rem;">The 24-Hour Rule</p>
+                <p>Before any non-essential purchase over $100, wait 24 hours. If you still want it, buy it.</p>
+              </div>
+            </div>
+            <div class="tip-card">
+              <div class="tip-number">02</div>
+              <div>
+                <p style="font-weight: 700; margin-bottom: 0.65rem;">Target High-APR Debts First</p>
+                <p>Paying off a card with 22% APR yields a guaranteed 22% return. Avoid low-yield savings until high debt is gone.</p>
+              </div>
+            </div>
+            <div class="tip-card">
+              <div class="tip-number">03</div>
+              <div>
+                <p style="font-weight: 700; margin-bottom: 0.65rem;">Automate Your Savings Transfer</p>
+                <p>Treat savings like a bill. Route 10% of your paycheck directly into savings or index portfolios.</p>
+              </div>
+            </div>
+            <div class="tip-card">
+              <div class="tip-number">04</div>
+              <div>
+                <p style="font-weight: 700; margin-bottom: 0.65rem;">Membership Cost Transparency</p>
+                <p>Break down subscriptions into daily, weekly, and monthly costs so you can see the real value.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-heading">
+            <h2>Loved by Debt-Slashers & Wealth-Builders</h2>
+          </div>
+          <div class="reviews-grid">
+            <div class="review-card">
+              <p>“The visual amortization comparison tool is incredible. Seeing my debt-free date move closer in real-time kept me motivated to pay off $14,000 in credit card balances in just 18 months.”</p>
+              <div class="review-author">
+                <img class="review-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80" alt="Marcus Miller" />
+                <div>
+                  <strong>Marcus Miller</strong>
+                  <p style="color: #6b7280;">Freelance Designer</p>
+                </div>
+              </div>
+            </div>
+            <div class="review-card">
+              <p>“I use the Membership Calculator for all my software subscriptions. It helped me realize I was spending $90/month on tools I barely opened. Highly recommend SpendSensie!”</p>
+              <div class="review-author">
+                <img class="review-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80" alt="Sophia Vance" />
+                <div>
+                  <strong>Sophia Vance</strong>
+                  <p style="color: #6b7280;">Operations Manager</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="faq" style="background: #f8fafc;">
+        <div class="container">
+          <div class="section-heading">
+            <div class="pill-tag">Questions & Answers</div>
+            <h2>Frequently Asked Questions</h2>
+          </div>
+          <div class="faq-card">
+            <div class="faq-item open">
+              <button class="faq-question" type="button">
+                What does Free Membership Management cover?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                It covers tracking dues, renewal dates, membership tiers, and payment status without any fees or premium requirements.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                How does the Free Budget Tracker work?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                The tracker compares income, expenses, and savings targets to show your available spending room and smart budgeting advice.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                What can I do with the Free Debt Payoff Planner?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                You can estimate payoff timelines, interest costs, and recommended payments to reduce debt faster and stay tension-free.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                Are Free Personal Finance tools really free?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                Yes. SpendSensie offers essential finance tools and planning help without requiring any paid signup or hidden charges.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                How do I use Free Expense Tracking?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                Enter your recurring costs and one-time spending, then review the categorized summary to find savings opportunities.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                What is Free Income Management?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                It helps you allocate salary, freelance, and side income across expenses, savings, and debt payments in a balanced plan.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                Can I set Free Savings Goals in SpendSensie?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                Yes. The planner lets you define targets and see how much to save monthly to reach them on schedule.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                What is Free Monthly Budget Planning?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                It creates a monthly budget structure based on income, expenses, and savings so you can stay on track each month.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                How does Free Loan Repayment work?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                The tool calculates your loan payoff schedule, total interest, and suggests payment changes to finish sooner.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                Does Free Credit Card Debt support multiple balances?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                It focuses on your current balance, interest rate, and payment so you can model the fastest way to reduce credit card debt.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                Can I use Free Financial Planning to create a roadmap?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                Yes. The site offers a planning roadmap with debt, budget, and membership insights to help you make better money decisions.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                How does Free Money Management help daily spending?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                It shows what you can afford each month, what to save, and where to reduce spending for a healthier cash flow.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                What is Free Bill Payment Tracking?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                Track due dates, recurring bills, and outstanding obligations so you never miss a payment or overspend.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                How does Free Member Payment Tracking work?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                It tracks membership payments, renewal status, and value so you can optimize subscriptions and dues management.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                Can I get Free Budget and Expense insights?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                Yes. The budget section summarizes spending, savings, and leftover cash to highlight where adjustments are needed.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                How does Free Debt Reduction planning help me?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                It offers a clear payoff plan, interest estimate, and recommended payment strategy so you can reduce debt faster.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                What Free Financial Reports are available?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                You can print or export reports for membership value, budget summaries, and debt payoff projections using built-in PDF tools.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                What are Free Membership Renewal FAQs for?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                They answer common questions about renewals, payment reminders, and membership value tracking.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                How do Free Budget, Membership & Debt tools work together?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                They work together by aligning your membership costs, spending budget, and debt payments into one clear financial view.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                What can Free Finance Management FAQs help me understand?
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                They explain how to use SpendSensie’s free features to manage income, expenses, savings, subscriptions, and debt more effectively.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="cta" style="padding-top: 4rem; padding-bottom: 4rem;">
+        <div class="container">
+          <div class="cta-block">
+            <h2>Ready to Master Your Finances?</h2>
+            <p style="max-width: 700px; margin: 1rem auto 0; color: rgba(255,255,255,0.88);">
+              Start using the SpendSensie calculator suite now. Compare membership costs, model budgets, and design your debt payoff plan with clarity.
+            </p>
+            <div class="cta-actions">
+              <a href="#features" class="button-primary">Launch Calculator Suite</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-brand">
+              <span class="brand-mark" style="width: 40px; height: 40px;">SS</span>
+              <span>SpendSensie</span>
+            </div>
+            <p>Take complete command of your capital. SpendSensie is a premium financial intelligence platform helping you save interest, budget intelligently, and grow wealth.</p>
+            <p style="margin-top: 1rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+              <strong style="color: #86efac;">●</strong>
+              AES-256 local encrypted sandbox environment.
+            </p>
+          </div>
+          <div>
+            <h3>Solutions</h3>
+            <ul class="footer-links">
+              <li><a href="#membership">Membership Management</a></li>
+              <li><a href="#budget">Budget Tracker</a></li>
+              <li><a href="#features">Debt Payoff Planner</a></li>
+              <li><a href="#faq">Financial Insights</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Calculators</h3>
+            <ul class="footer-links">
+              <li><a href="#">Membership Fees</a></li>
+              <li><a href="#">Debt Payoff</a></li>
+              <li><a href="#">SIP & Mortgage Tools</a></li>
+              <li><a href="#">More Widgets</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Company</h3>
+            <ul class="footer-links">
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Finance Blog</a></li>
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Security & Trust</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 SpendSensie. All rights reserved.</p>
+          <p>Made with ❤️ for users seeking financial growth.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const themeToggle = document.getElementById('theme-toggle');
+      const themeLabel = document.getElementById('theme-label');
+      const themeIcon = document.getElementById('theme-icon');
+      const languageDropdown = document.getElementById('language-dropdown');
+      const languageToggle = document.getElementById('language-toggle');
+      const languageLabel = document.getElementById('language-label');
+      const languageMenu = document.getElementById('language-menu');
+
+      const translations = {
+        en: {
+          heroTitle: 'Turn debt and budgets into a single confident financial plan.',
+          heroLead: 'SpendSensie delivers intelligent payoff forecasts, cash-flow clarity, and printable reports in one polished experience. Get free tracker-style budgeting help with no pressure to upgrade.',
+          ctaLaunch: 'Launch the calculator suite',
+          ctaExplore: 'Explore solutions',
+          featureCashflow: 'Cash Flow Forecasting',
+          featureBudget: 'Budget Tracker & Forecasting',
+          featureDebt: 'Debt Avalanche vs Snowball',
+          featureGoal: 'Visual Goal Milestones',
+          featureSecure: 'Secure Private Finance',
+          membershipTitle: 'Financial Tools Built for Wellness',
+          faqFree: 'Free Membership Management covers',
+        },
+        es: {
+          heroTitle: 'Convierte la deuda y los presupuestos en un único plan financiero confiable.',
+          heroLead: 'SpendSensie brinda pronósticos de pago inteligente, claridad de flujo de efectivo y reportes imprimibles en una experiencia pulida. Obtén ayuda gratuita para presupuestar sin presión para actualizar.',
+          ctaLaunch: 'Lanzar la suite de calculadora',
+          ctaExplore: 'Explorar soluciones',
+          featureCashflow: 'Previsión de flujo de caja',
+          featureBudget: 'Seguimiento y previsión de presupuesto',
+          featureDebt: 'Avalancha vs Bola de nieve de deudas',
+          featureGoal: 'Hitos visuales de metas',
+          featureSecure: 'Finanzas privadas seguras',
+          membershipTitle: 'Herramientas financieras diseñadas para el bienestar',
+          faqFree: 'El Management de Membresía Gratuito cubre',
+        },
+      };
+
+      function translate(key) {
+        const lang = document.documentElement.lang || 'en';
+        const dict = translations[lang] || translations.en;
+        return dict[key] || key;
+      }
+
+      const debtCalc = document.getElementById('debt-calc');
+      const budgetCalc = document.getElementById('budget-calc');
+      const hamburger = document.getElementById('hamburger');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const tabs = Array.from(document.querySelectorAll('.tab'));
+      const calcCards = Array.from(document.querySelectorAll('.calc-card'));
+
+      function updateThemeButton() {
+        const isDark = document.documentElement.classList.contains('dark');
+        themeLabel.textContent = isDark ? 'Light' : 'Dark';
+        themeIcon.textContent = isDark ? '☀️' : '🌙';
+      }
+
+      themeToggle.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        updateThemeButton();
+      });
+
+      languageToggle.addEventListener('click', () => {
+        languageDropdown.classList.toggle('open');
+        document.querySelectorAll('[data-key]').forEach(el => {
+          el.textContent = translate(el.dataset.key);
+        });
+      });
+
+      languageMenu.querySelectorAll('button').forEach((button) => {
+        button.addEventListener('click', () => {
+          languageLabel.textContent = button.textContent;
+          document.documentElement.lang = button.dataset.lang || 'en';
+          document.querySelectorAll('[data-key]').forEach(el => {
+            el.textContent = translate(el.dataset.key);
+          });
+          languageDropdown.classList.remove('open');
+        });
+      });
+
+      document.addEventListener('click', (event) => {
+        const isClickInside = languageDropdown.contains(event.target);
+        if (!isClickInside) {
+          languageDropdown.classList.remove('open');
+        }
+      });
+
+      // Mobile nav
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          mobileMenu.classList.toggle('open');
+        });
+      }
+
+      // Tabs logic: show one calculator at a time on small screens
+      function activateCalc(targetId) {
+        tabs.forEach(t => t.classList.toggle('active', t.dataset.target === targetId));
+        calcCards.forEach(card => card.classList.toggle('active', card.id === targetId));
+      }
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          activateCalc(tab.dataset.target);
+          // scroll to the calculator section header so tab changes stay on the calculator area
+          const section = document.getElementById('calculator');
+          if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+
+      // Open calculator button opens membership tab by default
+      document.querySelectorAll('a[href="#calculator"]').forEach(a => {
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          activateCalc('calc-debt');
+        });
+      });
+
+      function formatCurrency(value) {
+        return new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+          maximumFractionDigits: 2,
+        }).format(value);
+      }
+
+      // simulate amortization schedule for a given payment
+      function simulateAmortization(balance, monthlyRate, payment, maxMonths = 600) {
+        const schedule = [];
+        let bal = balance;
+        let month = 0;
+        let totalInterest = 0;
+        if (payment <= bal * monthlyRate) return { months: Infinity, totalInterest: Infinity, schedule };
+        while (bal > 0 && month < maxMonths) {
+          month++;
+          const interestAmount = bal * monthlyRate;
+          let principal = payment - interestAmount;
+          if (principal > bal) principal = bal;
+          const paid = principal + interestAmount;
+          bal = Math.max(0, bal - principal);
+          totalInterest += interestAmount;
+          schedule.push({ month, paid, principal, interest: interestAmount, balance: bal });
+        }
+        return { months: month, totalInterest, schedule };
+      }
+
+      function calculateMembership() {
+        const cost = Number(document.getElementById('membership-cost').value) || 0;
+        const cycle = document.getElementById('membership-cycle').value;
+        const usage = Number(document.getElementById('membership-use').value) || 0;
+        let monthly = cost;
+
+        if (cycle === 'quarterly') {
+          monthly = cost / 3;
+        } else if (cycle === 'annually') {
+          monthly = cost / 12;
+        }
+
+        const annual = monthly * 12;
+        const valuePerUse = usage > 0 ? monthly / usage : 0;
+        const score = usage > 0 ? Math.max(0, 100 - valuePerUse * 10).toFixed(0) : 'N/A';
+
+        document.getElementById('membership-monthly').textContent = formatCurrency(monthly);
+        document.getElementById('membership-annual').textContent = formatCurrency(annual);
+        document.getElementById('membership-savings').textContent = usage > 0
+          ? `Per-use cost is ${formatCurrency(valuePerUse)}. Value Score: ${score}/100.`
+          : 'Enter your usage estimate to see if the subscription delivers strong value.';
+        updateMembershipGraph(monthly, annual, valuePerUse);
+      }
+
+      function suggestAffordablePayment(payment, income, expenses) {
+        const disposable = Math.max(0, income - expenses);
+        const cushion = Math.max(500, income * 0.25);
+        const extraBudget = Math.max(0, disposable - cushion);
+        const extraLimit = Math.min(extraBudget * 0.4, payment * 0.15);
+        const roundedExtra = Math.max(0, Math.round(extraLimit / 5) * 5);
+        const recommendedPayment = payment + roundedExtra;
+
+        if (roundedExtra < 5) {
+          return {
+            affordable: false,
+            recommendedPayment: payment,
+            extra: 0,
+            message: disposable <= 0
+              ? 'Your current budget does not show available room for a larger payment. Keep the plan conservative until your income increases or expenses shrink.'
+              : 'Your current plan is already built to keep a healthy monthly cushion. No extra payment is recommended at this time.'
+          };
+        }
+
+        return {
+          affordable: true,
+          recommendedPayment,
+          extra: roundedExtra,
+          message: `A modest increase of ${formatCurrency(roundedExtra)} can be affordable and help you reach debt freedom sooner without straining essential expenses.`
+        };
+      }
+
+      function calculateDebt() {
+        const balance = Number(document.getElementById('debt-balance').value) || 0;
+        const apr = Number(document.getElementById('debt-rate').value) || 0;
+        const payment = Number(document.getElementById('debt-payment').value) || 0;
+        const income = Number(document.getElementById('debt-income').value) || 0;
+        const expenses = Number(document.getElementById('debt-expenses').value) || 0;
+        const monthlyRate = apr / 100 / 12;
+
+        const affordability = suggestAffordablePayment(payment, income, expenses);
+        const affordabilityEl = document.getElementById('debt-affordability');
+        if (affordabilityEl) {
+          affordabilityEl.textContent = affordability.message;
+        }
+
+        const monthlyInterest = balance * monthlyRate;
+        const interestShare = payment > 0 ? monthlyInterest / payment : 0;
+        const strategyElement = document.getElementById('debt-strategy');
+
+        if (balance <= 0 || payment <= 0) {
+          document.getElementById('debt-interest').textContent = '$0.00';
+          document.getElementById('debt-months').textContent = '0 months';
+          document.getElementById('debt-advice').textContent = 'Enter positive values to project your debt payoff timeline.';
+          if (strategyElement) strategyElement.textContent = 'Enter your debt details to get a Snowball vs Avalanche recommendation.';
+          updateDebtGraph([], balance);
+          renderDebtPlan([], payment, 0, balance, affordability, null);
+          return;
+        }
+
+        if (payment <= balance * monthlyRate) {
+          document.getElementById('debt-interest').textContent = '$0.00';
+          document.getElementById('debt-months').textContent = 'Not payable with current payment';
+          document.getElementById('debt-advice').textContent = 'Increase the monthly payment to cover interest and start reducing the balance.';
+          if (strategyElement) strategyElement.textContent = 'This payment does not cover interest yet. Increase the amount before choosing Snowball or Avalanche.';
+          updateDebtGraph([], balance);
+          renderDebtPlan([], payment, 0, balance, affordability, null);
+          return;
+        }
+
+        let strategyText = 'For most debt profiles, Avalanche is the strongest choice because it targets the highest APR balance first and lowers total interest.';
+        if (apr < 10 && balance <= 2000) {
+          strategyText = 'Snowball can be effective when smaller balances are easier to clear quickly, which helps build payoff momentum.';
+        } else if (interestShare >= 0.25 || apr >= 12) {
+          strategyText = 'Avalanche is recommended: prioritize high-interest debt to reduce total interest expense over time.';
+        } else if (apr < 12 && balance > 2000) {
+          strategyText = 'If you need quick wins with multiple small balances, Snowball may help you stay motivated. Avalanche still saves more interest overall.';
+        }
+
+        if (strategyElement) {
+          strategyElement.textContent = strategyText + ' If you have several debts, Avalanche targets the highest APR first while Snowball pays the smallest balance first.';
+        }
+
+        const amortization = simulateAmortization(balance, monthlyRate, payment);
+        const months = amortization.months;
+        const interest = amortization.totalInterest;
+        const suggestedAmortization = affordability.affordable
+          ? simulateAmortization(balance, monthlyRate, affordability.recommendedPayment)
+          : null;
+
+        document.getElementById('debt-months').textContent = `${months} months`;
+        document.getElementById('debt-interest').textContent = formatCurrency(interest);
+        document.getElementById('debt-advice').textContent = months <= 12
+          ? 'Your payment clears this debt within a year — excellent progress.'
+          : months <= 24
+            ? 'A solid payoff timeline. Boost payments slightly to save more interest.'
+            : 'A longer payoff schedule. Consider increasing payments to reduce the total cost.';
+
+        updateDebtGraph(amortization.schedule, balance, interest);
+        renderDebtPlan(amortization.schedule, payment, interest, balance, affordability, suggestedAmortization);
+      }
+
+      function calculateBudget() {
+        const income = Number(document.getElementById('budget-income').value) || 0;
+        const rent = Number(document.getElementById('budget-rent').value) || 0;
+        const food = Number(document.getElementById('budget-food').value) || 0;
+        const transport = Number(document.getElementById('budget-transport').value) || 0;
+        const entertainment = Number(document.getElementById('budget-entertainment').value) || 0;
+        const savings = Number(document.getElementById('budget-savings').value) || 0;
+        const totalExpenses = rent + food + transport + entertainment;
+        const remaining = income - totalExpenses;
+        const available = remaining - savings;
+        const savingsRate = income > 0 ? Math.round((savings / income) * 100) : 0;
+
+        document.getElementById('budget-total-expenses').textContent = formatCurrency(totalExpenses);
+        document.getElementById('budget-remaining').textContent = formatCurrency(remaining);
+        document.getElementById('budget-available').textContent = formatCurrency(available);
+        document.getElementById('budget-rate').textContent = `${savingsRate}%`;
+        updateBudgetGraph(income, totalExpenses, savings, available);
+        if (available >= 500) {
+          document.getElementById('budget-margin').textContent = 'Healthy';
+          document.getElementById('budget-advice').textContent = 'Your budget is in good standing. Maintain your current contribution levels.';
+        } else if (available >= 0) {
+          document.getElementById('budget-margin').textContent = 'Balanced';
+          document.getElementById('budget-advice').textContent = 'Your budget is balanced, but consider trimming discretionary expenses to build more savings.';
+        } else {
+          document.getElementById('budget-margin').textContent = 'Overdrawn';
+          document.getElementById('budget-advice').textContent = 'Your expenses exceed income. Reduce spending or adjust savings to restore balance.';
+        }
+      }
+
+      function updateMembershipGraph(monthly, annual, perUse) {
+        const monthlyLabel = document.getElementById('membership-graph-monthly-label');
+        const annualLabel = document.getElementById('membership-graph-annual-label');
+        const perUseLabel = document.getElementById('membership-graph-value-per-use-label');
+        const monthlyFill = document.getElementById('membership-graph-monthly');
+        const annualFill = document.getElementById('membership-graph-annual');
+        const perUseFill = document.getElementById('membership-graph-value-per-use');
+        const max = Math.max(monthly || 1, annual / 12 || 1, perUse || 1);
+
+        monthlyLabel.textContent = formatCurrency(monthly);
+        annualLabel.textContent = formatCurrency(annual);
+        perUseLabel.textContent = formatCurrency(perUse);
+        monthlyFill.style.width = `${Math.round((monthly / max) * 100)}%`;
+        annualFill.style.width = `${Math.round(((annual / 12) / max) * 100)}%`;
+        perUseFill.style.width = `${Math.round((perUse / max) * 100)}%`;
+      }
+
+      function updateDebtGraph(schedule, balance, interest = 0) {
+        const container = document.getElementById('debt-balance-sparkline');
+        const startLabel = document.getElementById('debt-graph-start');
+        const endLabel = document.getElementById('debt-graph-end');
+        const interestLabel = document.getElementById('debt-graph-interest');
+        if (!container) return;
+        container.innerHTML = '';
+        startLabel.textContent = `Start: ${formatCurrency(balance)}`;
+        endLabel.textContent = schedule.length ? `Payoff: ${formatCurrency(schedule[schedule.length - 1].balance)}` : 'Payoff: $0';
+        interestLabel.textContent = `Interest: ${formatCurrency(interest)}`;
+        if (schedule.length === 0) return;
+        const maxBalance = Math.max(...schedule.map((item) => item.balance), balance);
+        schedule.forEach((item) => {
+          const bar = document.createElement('div');
+          bar.className = 'sparkline-bar';
+          bar.style.height = `${Math.max(12, Math.round((item.balance / maxBalance) * 100))}%`;
+          bar.title = `Month ${item.month}: ${formatCurrency(item.balance)}`;
+          container.appendChild(bar);
+        });
+      }
+
+      function renderDebtPlan(schedule, payment, interest, startingBalance, affordability, suggestedAmortization) {
+        const summary = document.getElementById('debt-plan-summary');
+        const tableContainer = document.getElementById('debt-plan-schedule');
+        if (!summary || !tableContainer) return;
+
+        if (!schedule.length) {
+          summary.innerHTML = '<p class="plan-note">A payoff plan will appear here once you enter a valid balance, APR, and payment.</p>';
+          tableContainer.innerHTML = '';
+          return;
+        }
+
+        const totalInterest = schedule.reduce((sum, item) => sum + item.interest, 0);
+        const finalPayment = schedule[schedule.length - 1];
+        const firstEntry = schedule[0];
+        const startBalance = startingBalance || firstEntry.balance + firstEntry.principal;
+
+        let comparisonHtml = '';
+        if (affordability?.affordable && suggestedAmortization) {
+          const suggestedMonths = suggestedAmortization.months;
+          const suggestedInterest = suggestedAmortization.totalInterest;
+          const timeSaved = Math.max(0, schedule.length - suggestedMonths);
+          const interestSaved = Math.max(0, totalInterest - suggestedInterest);
+
+          comparisonHtml = `
+            <div class="plan-comparison">
+              <div class="plan-card">
+                <strong>Current plan</strong>
+                <p>Payment: ${formatCurrency(payment)}</p>
+                <p>Payoff time: ${schedule.length} months</p>
+                <p>Total interest: ${formatCurrency(totalInterest)}</p>
+              </div>
+              <div class="plan-card">
+                <strong>Suggested plan</strong>
+                <p>Payment: ${formatCurrency(affordability.recommendedPayment)}</p>
+                <p>Payoff time: ${suggestedMonths} months</p>
+                <p>Total interest: ${formatCurrency(suggestedInterest)}</p>
+              </div>
+            </div>
+            <div class="plan-callout">
+              <strong>Recommended change:</strong> Increase your monthly payment to ${formatCurrency(affordability.recommendedPayment)} for a more affordable, tension-free plan.
+              This reduces payoff time by ${timeSaved} months and saves ${formatCurrency(interestSaved)} in interest while keeping a healthy budget cushion.
+            </div>
+          `;
+        }
+
+        summary.innerHTML = `
+          <p class="plan-note">This plan pays off ${formatCurrency(startBalance)} in ${schedule.length} months with ${formatCurrency(payment)} monthly payments.</p>
+          <p class="plan-note">Projected total interest: ${formatCurrency(totalInterest)}.</p>
+          ${comparisonHtml}
+        `;
+
+        const formula = document.createElement('div');
+        formula.innerHTML = `
+          <p class="plan-note"><strong>Calculation details:</strong> Monthly interest = balance × APR ÷ 12. Principal paid = monthly payment − interest. Balance is reduced by the principal portion each month.</p>
+          <p class="plan-note">For the first month, interest is ${formatCurrency(schedule[0].interest)} and principal reduction is ${formatCurrency(schedule[0].principal)}.</p>
+        `;
+        summary.appendChild(formula);
+
+        const rows = schedule.map((item) => `
+          <tr>
+            <td>Month ${item.month}</td>
+            <td>${formatCurrency(item.paid)}</td>
+            <td>${formatCurrency(item.principal)}</td>
+            <td>${formatCurrency(item.interest)}</td>
+            <td>${formatCurrency(item.balance)}</td>
+          </tr>
+        `).join('');
+
+        tableContainer.innerHTML = `
+          <div class="plan-table-wrapper">
+            <table class="plan-table">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>Payment</th>
+                  <th>Principal</th>
+                  <th>Interest</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rows}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+
+      function updateBudgetGraph(income, expenses, savings, available) {
+        const incomeFill = document.getElementById('budget-graph-income');
+        const expensesFill = document.getElementById('budget-graph-expenses');
+        const savingsFill = document.getElementById('budget-graph-savings');
+        const availableFill = document.getElementById('budget-graph-available');
+        const incomeLabel = document.getElementById('budget-graph-income-label');
+        const expensesLabel = document.getElementById('budget-graph-expenses-label');
+        const savingsLabel = document.getElementById('budget-graph-savings-label');
+        const availableLabel = document.getElementById('budget-graph-available-label');
+        const max = Math.max(income, expenses, savings, Math.abs(available), 1);
+
+        incomeLabel.textContent = formatCurrency(income);
+        expensesLabel.textContent = formatCurrency(expenses);
+        savingsLabel.textContent = formatCurrency(savings);
+        availableLabel.textContent = formatCurrency(available);
+        incomeFill.style.width = `${Math.round((income / max) * 100)}%`;
+        expensesFill.style.width = `${Math.round((expenses / max) * 100)}%`;
+        savingsFill.style.width = `${Math.round((savings / max) * 100)}%`;
+        availableFill.style.width = `${Math.round((Math.max(0, available) / max) * 100)}%`;
+      }
+
+      function initGraphs() {
+        updateDebtGraph([], 0, 0);
+        updateBudgetGraph(0, 0, 0, 0);
+      }
+
+      debtCalc.addEventListener('click', () => {
+        calculateDebt();
+      });
+      budgetCalc.addEventListener('click', () => {
+        calculateBudget();
+      });
+
+      initGraphs();
+
+      document.querySelectorAll('.faq-question').forEach((button) => {
+        button.addEventListener('click', () => {
+          const item = button.closest('.faq-item');
+          const isOpen = item.classList.contains('open');
+          document.querySelectorAll('.faq-item').forEach((other) => other.classList.remove('open'));
+          if (!isOpen) {
+            item.classList.add('open');
+          }
+        });
+      });
+
+      updateThemeButton();
+
+      // Small helper to open a printable window
+      function openPrintWindow(title, bodyHtml) {
+        const w = window.open('', '_blank', 'width=900,height=700');
+        if (!w) return alert('Unable to open print window (popup blocked)');
+        w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>' + (title || '') + '</title>');
+        w.document.write('<style>body{font-family:Inter,system-ui,Arial; padding:20px; color:var(--text);} table{width:100%;border-collapse:collapse} td,th{padding:8px;border:1px solid #e6eef2}</style>');
+        w.document.write('</head><body>');
+        w.document.write(bodyHtml);
+        w.document.write('</body></html>');
+        w.document.close();
+        w.focus();
+        setTimeout(() => w.print(), 300);
+      }
+
+      function reportSectionStyles() {
+        return `
+          <style>
+            body{font-family:Inter,system-ui,Arial; color:#0f172a; margin:0; padding:24px; background:#f8fafc;}
+            .report-shell{max-width:840px; margin:0 auto; background:#ffffff; border-radius:26px; overflow:hidden; box-shadow:0 30px 80px rgba(15,23,42,0.12);}
+            .report-header{padding:32px 32px 24px; background:#0f172a; color:#ffffff;}
+            .report-header h1{margin:0;font-size:2rem;font-family:'Poppins',sans-serif;letter-spacing:-0.04em;}
+            .report-header p{margin:0.85rem 0 0;color:rgba(255,255,255,0.82);line-height:1.5;font-size:0.98rem;}
+            .report-content{padding:32px;}
+            .report-section{margin-bottom:26px;}
+            .report-subtitle{font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:0.9rem;}
+            .report-table{width:100%;border-collapse:collapse;border:1px solid #e2e8f0;}
+            .report-table th,.report-table td{padding:14px 16px;text-align:left;border-bottom:1px solid #e2e8f0;}
+            .report-table th{background:#f8fafc;color:#0f172a;font-weight:700;}
+            .summary-pill{display:inline-flex;align-items:center;gap:0.6rem;padding:12px 16px;border-radius:999px;background:#f8fafc;color:#0f172a;font-size:0.95rem;margin-top:12px;}
+            .summary-pill strong{font-weight:700;}
+            .legend-row{display:flex;align-items:center;gap:0.75rem;margin:10px 0;font-size:0.96rem;}
+            .chart-donut{width:240px;height:240px;border-radius:50%;box-shadow:0 18px 45px rgba(15,23,42,0.08);margin:0 auto 18px;background:#f8fafc;position:relative;}
+            .chart-donut:after{content:'';position:absolute;inset:52px;border-radius:50%;background:#ffffff;}
+            .chart-legend{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px;}
+            .chart-legend-item{display:flex;align-items:center;gap:0.75rem;font-size:0.95rem;color:#334155;}
+            .legend-color{width:14px;height:14px;border-radius:999px;display:inline-block;}
+            .graph-dot{width:14px;height:14px;border-radius:999px;display:inline-block;margin-right:0.7rem;}
+            .graph-color-monthly{background:#0ea5e9;}
+            .graph-color-annual{background:#22c55e;}
+            .graph-color-peruse{background:#047857;}
+            .graph-color-expenses{background:#f97316;}
+            .graph-color-savings{background:#4f46e5;}
+            .graph-color-available{background:#0f172a;}
+            .report-graph{display:flex;flex-wrap:wrap;gap:18px;margin-top:18px;}
+            .report-graph-card{flex:1;min-width:240px;background:#f8fafc;padding:18px;border-radius:22px;border:1px solid #e2e8f0;}
+            .report-graph-title{font-size:0.95rem;font-weight:700;color:#0f172a;margin-bottom:14px;}
+            .report-sparkline{display:flex;align-items:flex-end;gap:5px;height:90px;}
+            .report-sparkline-bar{flex:1;border-radius:999px 999px 0 0;background:#0ea5e9;}
+            .report-bar-legend{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+            .report-bar-item{display:flex;align-items:center;gap:0.75rem;font-size:0.95rem;color:#334155;}
+            .report-bar-fill{height:14px;border-radius:999px;background:#0f172a;}
+            .report-bar-value{padding-left:0.75rem;color:#475569;font-size:0.95rem;}
+            .report-footer{margin-top:28px;padding-top:22px;border-top:1px solid #e2e8f0;color:#64748b;font-size:0.92rem;}
+          </style>`;
+      }
+
+      function buildReportHtml(type) {
+        const now = new Date();
+        const dateLabel = now.toLocaleDateString() + ' • ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        if (type === 'membership') return buildMembershipReportHtml(dateLabel);
+        if (type === 'debt') return buildDebtReportHtml(dateLabel);
+        if (type === 'budget') return buildBudgetReportHtml(dateLabel);
+        return '<div>No report available</div>';
+      }
+
+      function buildMembershipReportHtml(dateLabel) {
+        const name = document.getElementById('membership-name').value.trim() || 'Subscription';
+        const cost = Number(document.getElementById('membership-cost').value) || 0;
+        const cycle = document.getElementById('membership-cycle').value;
+        const usage = Number(document.getElementById('membership-use').value) || 0;
+        const monthly = cycle === 'annually' ? cost / 12 : cycle === 'quarterly' ? cost / 3 : cost;
+        const annual = cycle === 'annually' ? cost : cycle === 'quarterly' ? cost * 4 : cost * 12;
+        const perUse = usage > 0 ? monthly / usage : 0;
+        const score = usage > 0 ? Math.max(0, Math.min(100, Math.round((400 / (perUse || 1)) * 10))) : 0;
+        const cycleLabel = cycle === 'annually' ? 'Annual' : cycle === 'quarterly' ? 'Quarterly' : 'Monthly';
+        const valueSummary = usage > 0 ? `Per-use cost is ${formatCurrency(perUse)}. Value Score: ${score}/100.` : 'Enter usage to see the subscription value score.';
+        const total = monthly + annual + perUse;
+        const monthlyPct = total ? Math.round((monthly / total) * 100) : 0;
+        const annualPct = total ? Math.round((annual / total) * 100) : 0;
+        const perUsePct = total ? 100 - monthlyPct - annualPct : 0;
+        const donut = `background: conic-gradient(#0ea5e9 0% ${monthlyPct}%, #22c55e ${monthlyPct}% ${monthlyPct + annualPct}%, #047857 ${monthlyPct + annualPct}% 100%);`;
+        return `<!doctype html><html><head><meta charset="utf-8"><title>Membership Value Report</title>${reportSectionStyles()}</head><body><div class="report-shell"><div class="report-header"><h1>Membership Value Report</h1><p>${name} • ${cycleLabel} billing</p><p>${dateLabel}</p></div><div class="report-content"><div class="report-section"><p class="report-subtitle">Summary</p><table class="report-table"><tr><th>Subscription</th><td>${name}</td></tr><tr><th>Billing cycle</th><td>${cycleLabel}</td></tr><tr><th>Subscription amount</th><td>${formatCurrency(cost)}</td></tr><tr><th>Monthly cost</th><td>${formatCurrency(monthly)}</td></tr><tr><th>Annual cost</th><td>${formatCurrency(annual)}</td></tr><tr><th>Estimated monthly usage</th><td>${usage || 'Not entered'}</td></tr><tr><th>Cost per use</th><td>${usage > 0 ? formatCurrency(perUse) : 'N/A'}</td></tr><tr><th>Value score</th><td>${usage > 0 ? score + '/100' : 'N/A'}</td></tr></table></div><div class="report-section"><p class="report-subtitle">Visual breakdown</p><div class="report-graph"><div class="report-graph-card"><div class="report-graph-title">Cost breakdown</div><div class="chart-donut" style="${donut}"></div><div class="chart-legend"><div class="chart-legend-item"><span class="legend-color graph-color-monthly"></span>Monthly (${monthlyPct}%)</div><div class="chart-legend-item"><span class="legend-color graph-color-annual"></span>Annual (${annualPct}%)</div><div class="chart-legend-item"><span class="legend-color graph-color-peruse"></span>Per-use (${perUsePct}%)</div></div></div><div class="report-graph-card"><div class="report-graph-title">Key metrics</div><div class="report-bar-legend"><div class="report-bar-item"><div class="report-bar-fill" style="width:${monthlyPct}%;background:#0ea5e9"></div><span class="report-bar-value">Monthly ${monthlyPct}%</span></div><div class="report-bar-item"><div class="report-bar-fill" style="width:${annualPct}%;background:#22c55e"></div><span class="report-bar-value">Annual ${annualPct}%</span></div><div class="report-bar-item"><div class="report-bar-fill" style="width:${perUsePct}%;background:#047857"></div><span class="report-bar-value">Per-use ${perUsePct}%</span></div></div></div></div><div class="summary-pill"><strong>Key insight:</strong> ${valueSummary}</div></div><div class="report-footer">Generated by SpendSensie — your financial intelligence assistant.</div></div></div></body></html>`;
+      }
+
+      function buildDebtReportHtml(dateLabel) {
+        const balance = Number(document.getElementById('debt-balance').value) || 0;
+        const rate = Number(document.getElementById('debt-rate').value) || 0;
+        const payment = Number(document.getElementById('debt-payment').value) || 0;
+        const monthlyRate = rate / 100 / 12;
+        const isValidPayment = payment > balance * monthlyRate && balance > 0;
+        const months = isValidPayment ? Math.ceil(Math.log(payment / (payment - balance * monthlyRate)) / Math.log(1 + monthlyRate)) : 0;
+        const interest = isValidPayment ? months * payment - balance : 0;
+        const totalPaid = isValidPayment ? months * payment : 0;
+        const advice = balance <= 0 ? 'Add a balance amount to estimate your payoff.' : !isValidPayment ? 'Monthly payment must exceed interest to reduce the balance.' : months <= 12 ? 'Excellent payoff speed. Continue this payment plan.' : 'Consider increasing payments to reduce interest and finish sooner.';
+        const suggestion = balance <= 0 ? 'Enter a balance amount and payment to generate a payoff plan.' : !isValidPayment ? 'Set a higher monthly payment to cover the interest and begin lowering your principal.' : months <= 12 ? 'Your current plan is strong; keep this pace to finish within a year.' : 'Increase your monthly payment by 10–20% to trim interest and accelerate payoff.';
+        const principalPct = balance ? 50 : 0;
+        const interestPct = balance ? 50 : 0;
+        const barWidth = isValidPayment ? Math.min(100, Math.max(20, Math.round((interest / totalPaid) * 100))) : 0;
+        const payoffPct = isValidPayment ? Math.min(100, Math.max(15, Math.round((interest / totalPaid) * 100))) : 0;
+        return `<!doctype html><html><head><meta charset="utf-8"><title>Debt Payoff Report</title>${reportSectionStyles()}</head><body><div class="report-shell"><div class="report-header"><h1>Debt Payoff Report</h1><p>${dateLabel}</p></div><div class="report-content"><div class="report-section"><p class="report-subtitle">Debt profile</p><table class="report-table"><tr><th>Current balance</th><td>${formatCurrency(balance)}</td></tr><tr><th>APR</th><td>${rate.toFixed(2)}%</td></tr><tr><th>Monthly payment</th><td>${formatCurrency(payment)}</td></tr><tr><th>Estimated payoff time</th><td>${isValidPayment ? months + ' months' : 'Not payable with current payment'}</td></tr><tr><th>Total interest</th><td>${isValidPayment ? formatCurrency(interest) : '$0.00'}</td></tr><tr><th>Total paid</th><td>${isValidPayment ? formatCurrency(totalPaid) : '$0.00'}</td></tr></table></div><div class="report-section"><p class="report-subtitle">Payoff analysis</p><div class="summary-pill"><strong>Advice:</strong> ${advice}</div><div class="summary-pill" style="margin-top:12px;background:#e0f2fe;color:#0c4a6e;"><strong>Suggestion:</strong> ${suggestion}</div><div class="report-graph"><div class="report-graph-card"><div class="report-graph-title">Interest impact</div><div class="report-sparkline">${Array.from({ length: 6 }).map((_, i) => `<div class="report-sparkline-bar" style="height:${10 + payoffPct + i * 5}%;background:#22c55e"></div>`).join('')}</div><div class="report-bar-legend"><div class="report-bar-item"><span class="legend-color graph-color-annual"></span>Total interest</div><div class="report-bar-item"><span class="legend-color graph-color-available"></span>Remaining balance</div></div></div><div class="report-graph-card"><div class="report-graph-title">Payoff performance</div><div class="report-bar-legend"><div class="report-bar-item"><div class="report-bar-fill" style="width:${isValidPayment ? 100 - payoffPct : 0}%;background:#22c55e"></div><span class="report-bar-value">Principal efficiency</span></div><div class="report-bar-item"><div class="report-bar-fill" style="width:${payoffPct}%;background:#f97316"></div><span class="report-bar-value">Interest share</span></div></div></div></div></div><div class="report-footer">Generated by SpendSensie — your financial intelligence assistant.</div></div></div></body></html>`;
+      }
+
+      function buildBudgetReportHtml(dateLabel) {
+        const income = Number(document.getElementById('budget-income').value) || 0;
+        const expenses = Number(document.getElementById('budget-expenses').value) || 0;
+        const savings = Number(document.getElementById('budget-savings').value) || 0;
+        const available = income - expenses - savings;
+        const margin = available >= 500 ? 'Healthy' : available >= 0 ? 'Balanced' : 'Overdrawn';
+        const advice = available >= 500 ? 'Maintain savings and continue optimizing discretionary budgets.' : available >= 0 ? 'Your budget is balanced, but watch non-essential spending.' : 'Reduce expenses or adjust savings targets to regain cash flow.';
+        const positiveAvailable = Math.max(0, available);
+        const total = income + expenses + savings + positiveAvailable || 1;
+        const incomePct = Math.round((income / total) * 100);
+        const expensesPct = Math.round((expenses / total) * 100);
+        const savingsPct = Math.round((savings / total) * 100);
+        const availablePct = Math.round((positiveAvailable / total) * 100);
+        const donut = `background: conic-gradient(#22c55e 0% ${incomePct}%, #f97316 ${incomePct}% ${incomePct + expensesPct}%, #4f46e5 ${incomePct + expensesPct}% ${incomePct + expensesPct + savingsPct}%, #0f172a ${incomePct + expensesPct + savingsPct}% 100%);`;
+        return `<!doctype html><html><head><meta charset="utf-8"><title>Budget Summary Report</title>${reportSectionStyles()}</head><body><div class="report-shell"><div class="report-header"><h1>Budget Summary Report</h1><p>${dateLabel}</p></div><div class="report-content"><div class="report-section"><p class="report-subtitle">Cash flow summary</p><table class="report-table"><tr><th>Monthly income</th><td>${formatCurrency(income)}</td></tr><tr><th>Fixed expenses</th><td>${formatCurrency(expenses)}</td></tr><tr><th>Target savings</th><td>${formatCurrency(savings)}</td></tr><tr><th>Available cash</th><td>${formatCurrency(available)}</td></tr><tr><th>Budget margin</th><td>${margin}</td></tr></table></div><div class="report-section"><p class="report-subtitle">Visual breakdown</p><div class="chart-donut" style="${donut}"></div><div class="chart-legend"><div class="chart-legend-item"><span class="legend-color graph-color-annual"></span>Income (${incomePct}%)</div><div class="chart-legend-item"><span class="legend-color graph-color-expenses"></span>Expenses (${expensesPct}%)</div><div class="chart-legend-item"><span class="legend-color graph-color-savings"></span>Savings (${savingsPct}%)</div><div class="chart-legend-item"><span class="legend-color graph-color-available"></span>Available (${availablePct}%)</div></div><div class="summary-pill"><strong>Recommendation:</strong> ${advice}</div></div><div class="report-footer">Generated by SpendSensie — your financial intelligence assistant.</div></div></div></body></html>`;
+      }
+
+      function printReport(type) {
+        const html = buildReportHtml(type);
+        const w = window.open('', '_blank', 'width=900,height=700');
+        if (!w) return alert('Unable to open print window (popup blocked)');
+        w.document.write(html);
+        w.document.close();
+        w.focus();
+        setTimeout(() => w.print(), 300);
+      }
+
+      function exportPdfReport(type) {
+        if (!window.html2canvas || !window.jspdf?.jsPDF) {
+          return alert('PDF export requires browser support. Please use the print option to save as PDF.');
+        }
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'fixed';
+        wrapper.style.left = '-10000px';
+        wrapper.style.top = '0';
+        wrapper.style.width = '900px';
+        wrapper.innerHTML = buildReportHtml(type);
+        document.body.appendChild(wrapper);
+        html2canvas(wrapper, { scale: 2, backgroundColor: '#f8fafc', useCORS: true }).then((canvas) => {
+          const imgData = canvas.toDataURL('image/png');
+          const pdf = new window.jspdf.jsPDF('p', 'pt', 'a4');
+          const pageWidth = pdf.internal.pageSize.getWidth();
+          const imgWidth = pageWidth - 40;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+          pdf.addImage(imgData, 'PNG', 20, 20, imgWidth, imgHeight);
+          pdf.save(`${type}-financial-report.pdf`);
+          document.body.removeChild(wrapper);
+        }).catch((error) => {
+          document.body.removeChild(wrapper);
+          console.error(error);
+          alert('Unable to create PDF. Please use the browser print option instead.');
+        });
+      }
+
+      function attachReportListeners() {
+        document.getElementById('membership-download-report')?.addEventListener('click', () => printReport('membership'));
+        document.getElementById('membership-pdf-report')?.addEventListener('click', () => exportPdfReport('membership'));
+        document.getElementById('debt-download-report')?.addEventListener('click', () => printReport('debt'));
+        document.getElementById('debt-pdf-report')?.addEventListener('click', () => exportPdfReport('debt'));
+        document.getElementById('budget-download-report')?.addEventListener('click', () => printReport('budget'));
+        document.getElementById('budget-pdf-report')?.addEventListener('click', () => exportPdfReport('budget'));
+      }
+
+      attachReportListeners();
+
+      // Budget planner storage + UI
+      const BUDGET_KEY = 'spensensie_budget_items_v1';
+
+      function loadBudgetItems() {
+        try { return JSON.parse(localStorage.getItem(BUDGET_KEY) || '[]'); } catch (e) { return []; }
+      }
+
+      function saveBudgetItems(items) {
+        localStorage.setItem(BUDGET_KEY, JSON.stringify(items));
+      }
+
+      function renderBudgetItems() {
+        const items = loadBudgetItems();
+        const table = document.getElementById('budget-items-table');
+        if (!table) return;
+        if (items.length === 0) {
+          table.innerHTML = '<tr><td style="color:var(--muted)">No items added yet.</td></tr>';
+          return;
+        }
+        let html = '<thead><tr style="text-align:left;border-bottom:1px solid var(--border)"><th>Category</th><th>Monthly Amount</th><th>Frequency</th><th></th></tr></thead><tbody>';
+        items.forEach((it, idx) => {
+          html += `<tr style="border-bottom:1px solid rgba(0,0,0,0.04)"><td>${it.name}</td><td>${formatCurrency(Number(it.amount)||0)}</td><td>${it.frequency}</td><td><button data-idx="${idx}" class="nav-action-button budget-delete">Delete</button></td></tr>`;
+        });
+        html += '</tbody>';
+        table.innerHTML = html;
+        // attach delete handlers
+        table.querySelectorAll('.budget-delete').forEach(btn => btn.addEventListener('click', (ev) => {
+          const idx = Number(btn.dataset.idx);
+          const list = loadBudgetItems();
+          list.splice(idx,1); saveBudgetItems(list); renderBudgetItems(); calculateBudget();
+        }));
+        // update totals
+        const total = items.reduce((s,i)=> s + Number(i.amount||0), 0);
+        const incomeEl = document.getElementById('budget-income');
+        const income = incomeEl ? Number(incomeEl.value) || 0 : 0;
+        const savingsEl = document.getElementById('budget-savings');
+        const savings = savingsEl ? Number(savingsEl.value) || 0 : 0;
+        const available = income - total - savings;
+        const availableEl = document.getElementById('budget-available');
+        if (availableEl) availableEl.textContent = formatCurrency(available);
+        const marginEl = document.getElementById('budget-margin');
+        if (marginEl) marginEl.textContent = available >= 500 ? 'Healthy' : (available >=0 ? 'Balanced' : 'Overdrawn');
+      }
+
+      document.getElementById('budget-add-btn')?.addEventListener('click', () => {
+        const name = document.getElementById('budget-add-name').value.trim();
+        const amountInput = Number(document.getElementById('budget-add-amount').value) || 0;
+        const frequency = document.getElementById('budget-add-frequency').value;
+        if (!name || amountInput <= 0) return alert('Enter a category name and positive amount');
+        // normalize amount to monthly
+        let monthly = amountInput;
+        if (frequency === 'weekly') monthly = amountInput * 4.345;
+        if (frequency === 'annually') monthly = amountInput / 12;
+        const items = loadBudgetItems();
+        items.push({ name, amount: Number(monthly.toFixed(2)), frequency });
+        saveBudgetItems(items);
+        renderBudgetItems();
+        document.getElementById('budget-add-name').value = '';
+        document.getElementById('budget-add-amount').value = '';
+        calculateBudget();
+      });
+
+      document.getElementById('open-budget-planner')?.addEventListener('click', () => {
+        const planner = document.getElementById('budget-planner');
+        if (planner) planner.style.display = planner.style.display === 'block' ? 'none' : 'block';
+        renderBudgetItems();
+      });
+
+      document.getElementById('budget-export')?.addEventListener('click', () => {
+        const items = loadBudgetItems();
+        const csv = ['Category,MonthlyAmount,Frequency'].concat(items.map(i => `${i.name.replace(/,/g,'')},${Number(i.amount).toFixed(2)},${i.frequency}`)).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'budget-items.csv'; a.click(); URL.revokeObjectURL(url);
+      });
+
+      document.getElementById('budget-print')?.addEventListener('click', () => {
+        const tableHtml = document.getElementById('budget-items-table')?.outerHTML || '<div>No items</div>';
+        openPrintWindow('Budget Planner', `<h2>Budget Items</h2>${tableHtml}`);
+      });
+
+      document.getElementById('budget-clear')?.addEventListener('click', () => {
+        if (!confirm('Clear all budget items?')) return;
+        saveBudgetItems([]); renderBudgetItems(); calculateBudget();
+      });
+
+      // initial render
+      renderBudgetItems();
+    </script>
+  </body>
+</html>

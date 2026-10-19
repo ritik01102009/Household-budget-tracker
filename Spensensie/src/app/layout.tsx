@@ -1,73 +1,86 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
+import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/providers/theme-provider";
-import { LanguageProvider } from "@/components/providers/language-provider";
+import { ThemeStateProvider } from "./theme-state-provider";
 
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 5,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f0f8f6" },
-    { media: "(prefers-color-scheme: dark)", color: "#001715" },
-  ],
-};
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+const poppins = Poppins({
+  weight: ["300", "400", "500", "600", "700", "800"],
+  subsets: ["latin"],
+  variable: "--font-display",
+});
 
 export const metadata: Metadata = {
-  title: "家計管理 - Free Debt Payoff Calculator & Budget Tracker App",
-  description: "家計管理 is the best budget app and credit card debt payoff calculator. Compare Debt Snowball vs Avalanche, track budget, and export professional PDF reports.",
+  title: "SpendSensie - Premium Personal Finance & Debt Payoff Tracker",
+  description:
+    "Take control of your financial wellness. Calculate memberships, compare Snowball and Avalanche debt payoff strategies, plan budgets, and track goals in one emerald-themed secure dashboard.",
   keywords: [
+    "personal finance",
     "debt payoff calculator",
-    "credit card debt payoff calculator",
-    "debt payoff planner",
-    "debt payoff spreadsheet",
-    "debt payoff",
     "budget tracker",
-    "budget tracker app",
-    "free budget tracker",
-    "budget tracker template",
-    "budget tracker google sheets",
-    "best budget app",
-    "budgeting apps",
-    "free budgeting apps",
-    "best apps for budgeting",
-    "money tracker",
-    "money management apps",
-    "budget planner app",
-    "家計簿",
-    "家計簿 無料",
-    "家計簿 エクセル",
-    "家計簿 テンプレート",
-    "家計簿 アプリ 無料",
-    "家計簿 web",
-    "支出管理",
-    "支出管理 無料",
-    "家計簿 印刷 無料",
-    "収支管理",
-    "貯金 計算",
-    "貯金シミュレーション"
+    "membership cost calculator",
+    "snowball strategy",
+    "avalanche strategy",
+    "financial wellness",
+    "savings goal tracker",
   ],
-  authors: [{ name: "家計管理 Team" }],
+  authors: [{ name: "SpendSensie Team" }],
+  openGraph: {
+    title: "SpendSensie - Premium Personal Finance & Debt Payoff Tracker",
+    description:
+      "Take control of your financial wellness. Calculate memberships, compare Snowball and Avalanche debt payoff strategies, plan budgets, and track goals.",
+    type: "website",
+    locale: "en_US",
+    siteName: "SpendSensie",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="h-full">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+        {/* 
+          Inline script runs synchronously before paint to apply the correct
+          theme class, preventing the white-flash on dark mode reload. 
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var saved = localStorage.getItem('theme');
+                  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  var isDark = saved ? saved === 'dark' : prefersDark;
+                  if (isDark) {
+                    document.documentElement.classList.add('dark');
+                  }
+                  // Also apply saved language to <html lang>
+                  var lang = localStorage.getItem('language');
+                  if (lang) {
+                    document.documentElement.lang = lang;
+                  }
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
       </head>
-      <body>
-        <ThemeProvider>
-          <LanguageProvider>
-            {children}
-          </LanguageProvider>
-        </ThemeProvider>
+      <body
+        className={`${inter.variable} ${poppins.variable} font-sans antialiased min-h-screen bg-slate-50 text-slate-900 dark:bg-darkbg-900 dark:text-slate-100 transition-colors duration-200`}
+      >
+        <ThemeStateProvider>{children}</ThemeStateProvider>
       </body>
     </html>
   );
